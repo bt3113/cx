@@ -1,0 +1,10 @@
+# CLEAR-X package SHA-256 hashes
+# Generated: 2026-05-09
+
+b01c8a2921068cb764be1f8536fbfcc53b6401acf3b1278648d9cf6d3192e611  CLEAR-X_Oractron_first_contact_package.zip
+b10aa7a588cb56bb19cf82a5bcf4e7db95840e8083df800044522f982b7a6742  CLEAR-X_Oractron_full_diligence_package.zip
+47e3af50b5b500d9e7bedf3218b49a9368b542693546ac1c99198af3747f5b5b  CLEAR-X_professional_submission_package.zip
+
+# Notes
+# These hashes fingerprint the prepared packages. A GitHub commit timestamp records this manifest in repository history.
+# For stronger public timestamping, also timestamp the package zip with OpenTimestamps or archive a release on Zenodo/OSF when ready.
