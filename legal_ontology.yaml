@@ -1,0 +1,200 @@
+policy_version: CLEAR-X-1
+
+modalities: 
+  - OBLIGATION
+  - PROHIBITION
+  - PERMISSION
+  - CONDITIONAL_PERMISSION
+  - EXCEPTION
+  - ACKNOWLEDGEMENT
+  - RIGHT
+  - LIMITATION
+  - REMEDY
+
+actors: 
+  - recipient
+  - discloser
+  - customer
+  - supplier
+  - vendor
+  - service_provider
+  - company
+  - contractor
+  - affiliate
+  - representative
+  - indemnifying_party
+  - indemnified_party
+  - licensee
+  - licensor
+  - assignor
+  - assignee
+  - either_party
+  - both_parties
+
+actions: 
+  - disclose
+  - use
+  - protect
+  - return
+  - destroy
+  - return_or_destroy
+  - return_and_destroy
+  - notify
+  - indemnify
+  - limit_liability
+  - terminate
+  - assign
+  - process_data
+  - transfer_data
+  - retain
+  - pay
+  - perform
+  - comply
+  - govern
+  - resolve_dispute
+  - none
+
+objects: 
+  - confidential_information
+  - personal_data
+  - services
+  - agreement
+  - liability
+  - damages
+  - claims
+  - losses
+  - intellectual_property
+  - obligations
+  - records
+  - materials
+  - work_product
+  - data
+  - fees
+  - assignment
+  - law
+  - dispute
+  - security_incident
+  - breach
+
+targets: 
+  - third_party
+  - representative
+  - affiliate
+  - legal_authority
+  - customer
+  - supplier
+  - vendor
+  - employee
+  - contractor
+  - auditor
+  - advisor
+  - court
+  - regulator
+  - public
+  - discloser
+  - assignee
+  - none
+
+conditions: 
+  - need_to_know
+  - bound_by_confidentiality
+  - no_less_protective
+  - prior_written_consent
+  - legally_compelled
+  - prompt_notice
+  - protective_order_sought
+  - breach
+  - material_breach
+  - non_payment
+  - insolvency
+  - force_majeure
+  - data_subject_request
+  - security_incident
+  - court_order
+  - regulatory_request
+  - certification_required
+
+exceptions: 
+  - public_domain_exception
+  - already_known_exception
+  - independently_developed_exception
+  - rightful_receipt_exception
+  - legal_compulsion_exception
+  - prior_consent_exception
+  - affiliate_exception
+  - representative_exception
+  - gross_negligence_exception
+  - willful_misconduct_exception
+  - consequential_damages_exclusion
+  - liability_cap_exception
+
+clause_families: 
+  - CONFIDENTIALITY_DISCLOSURE_RESTRICTION
+  - CONFIDENTIALITY_USE_RESTRICTION
+  - REPRESENTATIVE_SHARING
+  - AFFILIATE_SHARING
+  - COMPELLED_DISCLOSURE
+  - RETURN_OR_DESTRUCTION
+  - CONFIDENTIALITY_SURVIVAL
+  - STANDARD_OF_CARE
+  - PUBLIC_DOMAIN_EXCEPTION
+  - ALREADY_KNOWN_EXCEPTION
+  - INDEPENDENT_DEVELOPMENT_EXCEPTION
+  - RIGHTFUL_RECEIPT_EXCEPTION
+  - PRIOR_WRITTEN_CONSENT_EXCEPTION
+  - NOTICE_REQUIREMENT
+  - DATA_USE_RESTRICTION
+  - INDEMNITY
+  - LIMITATION_OF_LIABILITY
+  - TERMINATION_RIGHT
+  - ASSIGNMENT_RESTRICTION
+  - GOVERNING_LAW
+
+scope_types: 
+  - none
+  - all
+  - defined_term
+  - category
+  - time_limited
+  - amount_limited
+  - jurisdiction_limited
+  - specific_class
+  - excluded_class
+  - included_class
+  - evaluation_transaction
+  - internal_business
+  - service_performance
+  - legal_compliance
+  - data_processing
+  - during_term
+  - after_termination
+  - before_event
+  - after_event
+  - fixed_period
+  - prompt
+  - reasonable_time
+  - reasonable_care
+  - own_info_care
+  - max_own_info_reasonable
+  - commercially_reasonable
+  - strict_confidence
+  - money
+  - multiple_of_fees
+  - unlimited
+  - fixed_amount
+  - fees_paid
+  - uncapped
+  - super_cap
+  - breach
+  - material_breach
+  - non_payment
+  - insolvency
+  - convenience
+  - legal_compulsion
+  - security_incident
+  - injunctive_relief
+  - damages
+  - termination
+  - indemnification
+  - specific_performance
+  - state
