@@ -1,59 +1,66 @@
-# CLEAR-X
+# Zat — creator profile + Story sharing MVP
 
-CLEAR-X is a research prototype for verified semantic diff and equivalence checking of commercial contract clauses.
+Zat is a mobile-first creator profile for a person's work, taste, tools and recommendations. The public profile uses the dark spatial-grid visual system from the supplied references and includes a creator-side Studio.
 
-It compares two supported clauses and returns one of:
+## Included routes
 
-- `EQUAL`
-- `DIFFERENT`
-- `REJECT`
+- `/` — product/marketing page
+- `/alex` — public creator profile
+- `/alex/wardrobe`, `/alex/music`, etc. — deep links to individual Spaces
+- `/studio` — editable creator profile + Space editor
+- `/pricing` — pricing page
+- `/health` — server health check when using the included Node server
 
-For accepted clauses, CLEAR-X maps each clause into a typed canonical legal frame and compares material fields. If a clause is unsupported, ambiguous, or outside the declared grammar, the system rejects rather than guessing.
+## One-tap Story system
 
-## Repository status
+Every public grid card has its own share action. Zat generates a 1080×1920 PNG in the browser using the actual Space image, title, subtitle, creator, disclosure status and a unique Zat URL.
 
-This repository is intended to contain the actual CLEAR-X project files only: code, schemas, ontology, verification scripts, reports, and benchmark data.
+The full creator profile can also generate a 1080×1920 profile Story featuring the creator plus selected Spaces.
 
-## Core rule
+The Story Studio provides:
 
-```text
-supported + same canonical frame -> EQUAL
-supported + different canonical frames -> DIFFERENT with structured diffs
-unsupported or ambiguous -> REJECT
+- live 9:16 preview
+- native Web Share API handoff on supported iPhone/Android browsers
+- attached PNG file for the system share sheet
+- save/download PNG fallback
+- copy-link fallback
+- unique share URL per Space
+- deep-link opening for shared Space URLs
+- share event tracking hook
+
+A browser cannot silently publish to a user's Instagram account. On supported mobile browsers, the native share sheet is opened with the generated image so Instagram, Messages, WhatsApp and other installed apps can be selected by the user.
+
+## Run locally
+
+Requires Node 20+.
+
+```bash
+npm start
 ```
 
-## Important limitation
-
-CLEAR-X is a research prototype. It is not legal advice, not a full CLM platform, and not a replacement for lawyer review.
-
-## Expected project files
+Then open:
 
 ```text
-policy.md
-legal_ontology.yaml
-canonical_schema.json
-diff_schema.json
-proof_trace_schema.json
-canonicalizer.py
-llm_candidate_parser.py
-verifier.py
-comparator.py
-span_coverage.py
-baselines.py
-run_verification.py
-run_baselines.py
-equal_pairs.jsonl
-different_pairs.jsonl
-reject_pairs.jsonl
-adversarial_pairs.jsonl
-regression_pairs.jsonl
-verification_report.txt
-baseline_report.txt
-failure_taxonomy.md
-design_notes.md
-legal_residue_firewall.md
-model_card.md
-paper_draft.md
+http://localhost:8080/alex
 ```
 
-Large JSONL benchmark files should be pushed with normal Git or Git LFS from a local clone if they exceed connector limits.
+If port 8080 is occupied:
+
+```bash
+PORT=8099 npm start
+```
+
+## Static hosting
+
+The frontend is also deployable to static hosts. `vercel.json` and `_redirects` are included so SPA/deep-link routes resolve back to `index.html` on common hosts.
+
+## Persistence
+
+The UI works without a backend using browser storage. The included `server.mjs` optionally provides JSON profile persistence and event logging. For production, replace the JSON store with Postgres/D1/Supabase and host creator media in first-party object storage so Story canvas generation remains same-origin and reliable.
+
+## Security / production notes
+
+- Creator writes are protected by `ZAT_ADMIN_TOKEN` when using the included Node server.
+- Basic rate limiting and security headers are included.
+- Affiliate/sponsored disclosure labels are part of the item data model and are rendered into both the item page and generated Story asset.
+- The demo artwork comes from the supplied reference build. Replace it with creator-owned/licensed media before commercial use.
