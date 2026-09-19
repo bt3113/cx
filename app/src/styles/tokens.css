@@ -1,0 +1,72 @@
+/**
+ * Zat design tokens.
+ *
+ * Derived directly from the supplied reference art direction: a near-black
+ * ground lit from above, structural bronze linework, and off-white type.
+ * Bronze is structure and accent only — it never becomes a fill.
+ */
+
+@theme {
+  /* --- Ground ------------------------------------------------------- */
+  --color-void: #040405;
+  --color-bg: #0a0a0b;
+  --color-bg-lift: #101012;
+  --color-panel: #141416;
+
+  /* --- Bronze ramp (curved world, glow nodes, accents) -------------- */
+  --color-bronze-100: #f2d9b0;
+  --color-bronze-200: #e6c491;
+  --color-bronze-300: #d8a96a;
+  --color-bronze-400: #c6944f;
+  --color-bronze-500: #b8813f;
+  --color-bronze-600: #8e632f;
+  --color-bronze-700: #6e4a21;
+
+  /* --- Signal ------------------------------------------------------- */
+  --color-dot: #ef2b3a;
+  --color-positive: #6fbf8e;
+  --color-caution: #d8a96a;
+
+  /* --- Type --------------------------------------------------------- */
+  --color-ink: #faf8f5;
+  --color-ink-2: rgb(250 248 245 / 0.62);
+  --color-ink-3: rgb(250 248 245 / 0.38);
+  --color-ink-4: rgb(250 248 245 / 0.22);
+
+  /* --- Materials ---------------------------------------------------- */
+  --color-surface: rgb(255 255 255 / 0.045);
+  --color-surface-2: rgb(255 255 255 / 0.075);
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-line-2: rgb(255 255 255 / 0.14);
+
+  /* --- Radii -------------------------------------------------------- */
+  --radius-card: 20px;
+  --radius-panel: 28px;
+  --radius-tile: 16px;
+
+  /* --- Type families ------------------------------------------------ */
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* --- Motion ------------------------------------------------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  /* Depth of the cylindrical stage. Overridden per breakpoint. */
+  --world-perspective: 1800px;
+  --world-radius: 780px;
+
+  /* Creator-controlled motion intensity (0 = still, 1 = full). */
+  --motion-scale: 1;
+
+  color-scheme: dark;
+}
+
+/* A creator can dial motion down; a visitor's OS setting always wins. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+}

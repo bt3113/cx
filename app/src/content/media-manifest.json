@@ -1,0 +1,482 @@
+{
+  "portrait/alex-den": {
+    "w": 244,
+    "h": 918,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/wardrobe": {
+    "w": 186,
+    "h": 106,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/wardrobe@2x": {
+    "w": 186,
+    "h": 106,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/music": {
+    "w": 158,
+    "h": 91,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/music@2x": {
+    "w": 158,
+    "h": 91,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/travel": {
+    "w": 158,
+    "h": 92,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/travel@2x": {
+    "w": 158,
+    "h": 92,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/memories": {
+    "w": 192,
+    "h": 103,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/memories@2x": {
+    "w": 192,
+    "h": 103,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/work": {
+    "w": 161,
+    "h": 96,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/work@2x": {
+    "w": 161,
+    "h": 96,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/fitness": {
+    "w": 190,
+    "h": 105,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/fitness@2x": {
+    "w": 190,
+    "h": 105,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/ideas": {
+    "w": 80,
+    "h": 113,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/ideas@2x": {
+    "w": 80,
+    "h": 113,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/life": {
+    "w": 190,
+    "h": 154,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/life@2x": {
+    "w": 190,
+    "h": 154,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/gaming": {
+    "w": 184,
+    "h": 106,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/gaming@2x": {
+    "w": 184,
+    "h": 106,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/movies": {
+    "w": 164,
+    "h": 79,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/movies@2x": {
+    "w": 164,
+    "h": 79,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/photography": {
+    "w": 192,
+    "h": 125,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/photography@2x": {
+    "w": 192,
+    "h": 125,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "books/daily-stoic": {
+    "w": 109,
+    "h": 165,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "books/atomic-habits": {
+    "w": 105,
+    "h": 161,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "books/deep-work": {
+    "w": 105,
+    "h": 161,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "books/almanack": {
+    "w": 103,
+    "h": 161,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "books/thinking-fast-slow": {
+    "w": 103,
+    "h": 161,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/books": {
+    "w": 900,
+    "h": 765,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "spaces/books@2x": {
+    "w": 900,
+    "h": 765,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/dawn-peaks": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/dawn-peaks@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/amber-range": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/amber-range@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/fog-ridge": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/fog-ridge@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/cold-summit": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/cold-summit@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/ocean": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/ocean@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/desert-dusk": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/desert-dusk@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/night-glass": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/night-glass@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/forest": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "scenes/forest@2x": {
+    "w": 900,
+    "h": 700,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "avatars/alex-den": {
+    "w": 220,
+    "h": 220,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "avatars/mara-ellison": {
+    "w": 220,
+    "h": 220,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "avatars/jonas-reeve": {
+    "w": 220,
+    "h": 220,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "avatars/priya-raman": {
+    "w": 220,
+    "h": 220,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/ember": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/slate": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/moss": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/plum": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/dune": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "aura/ink": {
+    "w": 900,
+    "h": 560,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "plinth/optics": {
+    "w": 760,
+    "h": 760,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "plinth/audio": {
+    "w": 760,
+    "h": 760,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "plinth/studio": {
+    "w": 760,
+    "h": 760,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "plinth/field": {
+    "w": 760,
+    "h": 760,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  }
+}

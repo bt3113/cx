@@ -1,8 +1,12 @@
 {
-  "name":"zat-site",
-  "private":true,
-  "version":"1.0.0",
-  "type":"module",
-  "scripts":{"start":"node server.mjs"},
-  "engines":{"node":">=20"}
+  "name": "zat-root",
+  "private": true,
+  "description": "Zat — built output is served from this directory by GitHub Pages; source lives in app/.",
+  "scripts": {
+    "dev": "npm --prefix app run dev",
+    "build": "npm --prefix app run build",
+    "assets": "npm --prefix app run assets",
+    "typecheck": "npm --prefix app run typecheck",
+    "install:app": "npm --prefix app install"
+  }
 }

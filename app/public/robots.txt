@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bt3113.github.io/cx/sitemap.xml
