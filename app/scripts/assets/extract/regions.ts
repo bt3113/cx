@@ -37,7 +37,7 @@ export type CardExtract = {
  */
 export const PORTRAIT = {
   region: { left: 352, top: 382, width: 244, height: 918 } satisfies Region,
-  guards: [{ yTo: 0.2, xFrom: 0.37 }],
+  guards: [{ yTo: 0.34, xFrom: 0.375 }],
 };
 
 export const CARDS: CardExtract[] = [
@@ -59,7 +59,7 @@ export const CARDS: CardExtract[] = [
   { id: 'gaming', src: 'DKV', region: { left: 173, top: 635, width: 184, height: 156 }, bakedCaption: 0.32 },
   { id: 'movies', src: 'DKV', region: { left: 507, top: 630, width: 164, height: 119 }, bakedCaption: 0.34 },
   // Photography only appears in the vertical composition.
-  { id: 'photography', src: 'MBV', region: { left: 700, top: 772, width: 192, height: 160 }, bakedCaption: 0.22 },
+  { id: 'photography', src: 'MBV', region: { left: 706, top: 792, width: 186, height: 142 }, bakedCaption: 0.16 },
 ];
 
 /** Book cover artwork from the opened Books panel, kept at its natural ratio. */
@@ -69,4 +69,23 @@ export const BOOK_COVERS: Array<{ id: string; region: Region }> = [
   { id: 'deep-work', region: { left: 321, top: 373, width: 105, height: 161 } },
   { id: 'almanack', region: { left: 440, top: 373, width: 103, height: 161 } },
   { id: 'thinking-fast-slow', region: { left: 557, top: 373, width: 103, height: 161 } },
+];
+
+/**
+ * Tight detail crops of the same reference photography.
+ *
+ * Items outnumber the distinct photographs in the references, so rather than
+ * repeating a whole card image or falling back to abstract art, several Items
+ * carry a close crop of the real object. These read as product detail shots
+ * because that is what they are.
+ */
+export const DETAIL_CROPS: Array<{ id: string; src: 'DKV' | 'MBV'; region: Region }> = [
+  { id: 'lens', src: 'MBV', region: { left: 742, top: 838, width: 96, height: 84 } },
+  { id: 'earcup', src: 'DKV', region: { left: 516, top: 210, width: 96, height: 84 } },
+  { id: 'knit-weave', src: 'DKV', region: { left: 236, top: 176, width: 100, height: 88 } },
+  { id: 'weight-end', src: 'DKV', region: { left: 1438, top: 382, width: 104, height: 90 } },
+  { id: 'deck', src: 'DKV', region: { left: 1124, top: 404, width: 108, height: 92 } },
+  { id: 'pad', src: 'DKV', region: { left: 196, top: 660, width: 108, height: 92 } },
+  { id: 'ridge', src: 'DKV', region: { left: 1128, top: 206, width: 112, height: 96 } },
+  { id: 'surf', src: 'DKV', region: { left: 1444, top: 588, width: 116, height: 100 } },
 ];

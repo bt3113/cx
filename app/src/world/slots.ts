@@ -44,7 +44,7 @@ export const DESKTOP_SLOTS: Slot[] = [
   // 10 Movies — inner left, low
   { card: { l: 30.6, t: 66.5, w: 9.4 }, meta: { l: 24.2, t: 61, w: 6, align: 'left' } },
   // 11 Ideas — inner right, low (small tile)
-  { card: { l: 71.2, t: 60, w: 4.8 }, meta: { l: 59.3, t: 57, w: 7, align: 'left' } },
+  { card: { l: 70.5, t: 60, w: 7 }, meta: { l: 59.3, t: 57, w: 7, align: 'left' } },
   // 12 Life — far right, low
   { card: { l: 85.3, t: 60, w: 11.5 }, meta: { l: 79, t: 58, w: 6, align: 'left' } },
 ];

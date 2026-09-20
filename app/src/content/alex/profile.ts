@@ -22,6 +22,7 @@ export const alex: Person = {
     alt: 'Alex Den standing, full length, in a burgundy knit sweater',
     retina: false,
   },
+  character: null,
   socials: [
     { network: 'instagram', handle: '@alexden', url: 'https://example.com/social/alexden' },
     { network: 'x', handle: '@alex.archive', url: 'https://example.com/social/alex-archive' },

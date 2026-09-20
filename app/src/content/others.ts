@@ -26,6 +26,7 @@ export const otherPeople: Person[] = [
     timezone: 'Europe/London',
     avatar: { key: 'avatars/mara-ellison', alt: 'Mara Ellison', retina: false },
     portrait: null,
+    character: null,
     socials: [
       { network: 'instagram', handle: '@mara.ellison', url: 'https://example.com/social/mara' },
       { network: 'website', handle: 'maraellison.co', url: 'https://example.com/mara' },
@@ -47,6 +48,7 @@ export const otherPeople: Person[] = [
     timezone: 'Europe/Copenhagen',
     avatar: { key: 'avatars/jonas-reeve', alt: 'Jonas Reeve', retina: false },
     portrait: null,
+    character: null,
     socials: [
       { network: 'dribbble', handle: 'jonasreeve', url: 'https://example.com/social/jonas' },
       { network: 'linkedin', handle: 'jonasreeve', url: 'https://example.com/social/in-jonas' },
@@ -68,6 +70,7 @@ export const otherPeople: Person[] = [
     timezone: 'Asia/Kolkata',
     avatar: { key: 'avatars/priya-raman', alt: 'Priya Raman', retina: false },
     portrait: null,
+    character: null,
     socials: [
       { network: 'x', handle: '@priyabuilds', url: 'https://example.com/social/priya' },
       { network: 'website', handle: 'priyaraman.dev', url: 'https://example.com/priya' },

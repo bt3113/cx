@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet, ScrollRestoration, useLocation } from 'react-router';
 
 /**
@@ -10,9 +10,19 @@ import { Outlet, ScrollRestoration, useLocation } from 'react-router';
 export function RootLayout() {
   const { pathname } = useLocation();
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
-    // Move focus to the document so the next Tab starts from the top of the
-    // new page rather than wherever the previous link happened to be.
+    // On client navigation, move focus into the new page so the next Tab
+    // starts there rather than wherever the previous link happened to be.
+    //
+    // Deliberately skipped on the first render: on initial load focus belongs
+    // at the top of the document, or the skip link stops being the first tab
+    // stop and keyboard users lose it entirely.
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     const main = document.getElementById('main');
     if (main) {
       main.setAttribute('tabindex', '-1');

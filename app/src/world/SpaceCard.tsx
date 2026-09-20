@@ -32,6 +32,8 @@ export type CardOverlay =
   | 'caption'
   /** Number, title, descriptor and arrow — the card stands alone. */
   | 'full'
+  /** Title and arrow only, for the narrow cards in the vertical orbit. */
+  | 'title'
   /** Mostly typographic, for the small tile grammar. */
   | 'tile';
 
@@ -97,7 +99,7 @@ export function SpaceCard({
           )}
         />
 
-        {overlay === 'full' ? (
+        {overlay === 'full' || overlay === 'title' ? (
           <>
             <div
               aria-hidden="true"
@@ -108,29 +110,33 @@ export function SpaceCard({
         ) : null}
 
         {isTile ? (
-          <div className="absolute inset-x-3.5 top-3.5 z-10">
+          <div className="absolute inset-x-3 top-3 z-10">
             <SpaceNumber value={space.index} className="mb-1.5" />
-            <h3 className="text-[14px] font-medium leading-tight text-ink">{space.title}</h3>
+            <h3 className="text-[13px] font-medium leading-tight text-ink">{space.title}</h3>
           </div>
         ) : null}
 
         <div className="absolute inset-x-3.5 bottom-3 z-10 flex items-end justify-between gap-2.5">
           <div className="min-w-0">
-            {overlay === 'full' ? (
-              <h3 className="mb-1 text-[15px] font-medium leading-tight text-ink">{space.title}</h3>
+            {overlay === 'full' || overlay === 'title' ? (
+              <h3 className="mb-1 line-clamp-2 text-[13.5px] font-medium leading-tight text-ink">
+                {space.title}
+              </h3>
             ) : null}
-            <p
-              className={cn(
-                'leading-[1.3] text-ink drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]',
-                overlay === 'full'
-                  ? 'text-[12px] font-normal text-ink-2'
-                  : 'text-[clamp(10px,0.8vw,12.5px)] font-medium',
-              )}
-            >
-              <Lines text={overlay === 'full' ? space.descriptor : space.caption} />
-            </p>
+            {overlay !== 'title' && overlay !== 'tile' ? (
+              <p
+                className={cn(
+                  'leading-[1.3] text-ink drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]',
+                  overlay === 'full'
+                    ? 'text-[12px] font-normal text-ink-2'
+                    : 'text-[clamp(10px,0.8vw,12.5px)] font-medium',
+                )}
+              >
+                <Lines text={overlay === 'full' ? space.descriptor : space.caption} />
+              </p>
+            ) : null}
           </div>
-          <ArrowBadge size={overlay === 'full' ? 32 : 28} className="translate-y-0.5" />
+          <ArrowBadge size={overlay === 'caption' ? 28 : 26} className="translate-y-0.5" />
         </div>
       </div>
     </Link>

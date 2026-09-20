@@ -12,9 +12,11 @@
 import { Fragment, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { cn } from '@/design/cn';
+import { Picture } from '@/lib/media';
+import { CharacterPreview } from '@/features/character/CharacterBuilder';
+import type { CharacterConfig } from '@/features/character/schema';
 import { repo } from '@/lib/repo';
 import type { Person, Space } from '@/lib/schema';
-import { ProfileCharacter } from '@/features/character/ProfileCharacter';
 import { CurvedGrid, Dais } from './CurvedGrid';
 import { SpaceCard, SpaceMeta } from './SpaceCard';
 import { IdentityBlock } from './IdentityBlock';
@@ -50,6 +52,7 @@ export function SpatialWorld({
   const rotateY = useTransform(sx, [-1, 1], [3.6 * strength, -3.6 * strength]);
   const rotateX = useTransform(sy, [-1, 1], [-2 * strength, 2 * strength]);
   const shiftX = useTransform(sx, [-1, 1], [22 * strength, -22 * strength]);
+  // The backdrop drifts less than the cards, which reads as depth.
   const bgX = useTransform(sx, [-1, 1], [12 * strength, -12 * strength]);
   const figureX = useTransform(sx, [-1, 1], [-8 * strength, 8 * strength]);
 
@@ -70,6 +73,8 @@ export function SpatialWorld({
     py.set(0);
   }, [px, py]);
 
+  // A pointer leaving the window entirely never fires pointerleave on the
+  // stage, which would strand the world off-centre.
   useEffect(() => {
     const reset = () => {
       px.set(0);
@@ -92,29 +97,51 @@ export function SpatialWorld({
         dimmed && 'pointer-events-none opacity-35 blur-[2px]',
       )}
     >
+      {/* Backdrop: curved architecture + ambient key light. */}
       <motion.div className="absolute inset-[-6%]" style={{ x: bgX }}>
         <CurvedGrid />
       </motion.div>
 
-      <motion.div className="preserve-3d absolute inset-0" style={{ rotateY, rotateX, x: shiftX }}>
+      <motion.div
+        className="preserve-3d absolute inset-0"
+        style={{ rotateY, rotateX, x: shiftX }}
+      >
+        {/* Floor. */}
         <Dais className="bottom-[2%] left-1/2 w-[72%] -translate-x-1/2" />
 
-        {/* The figure is now driven by structured character data. Creators
-            without a character config continue to use the existing portrait. */}
-        <motion.div
-          className="absolute z-20"
-          style={{
-            left: `${FIGURE.l}%`,
-            top: `${FIGURE.t}%`,
-            width: `${FIGURE.w}%`,
-            height: '72%',
-            x: figureX,
-            z: 60,
-          }}
-        >
-          <ProfileCharacter person={person} sizes="16vw" className="h-full w-full" />
-        </motion.div>
+        {/* The figure — the anchor of the whole composition. A creator without
+            a photograph gets their built character, framed as a bust on the
+            dais rather than a stretched imitation of a full-length figure. */}
+        {person.portrait || person.character ? (
+          <motion.div
+            className="absolute z-20"
+            style={{
+              left: person.portrait ? `${FIGURE.l}%` : `${FIGURE.l - 1}%`,
+              top: person.portrait ? `${FIGURE.t}%` : `${FIGURE.t + 14}%`,
+              width: person.portrait ? `${FIGURE.w}%` : `${FIGURE.w + 2}%`,
+              x: figureX,
+              z: 60,
+            }}
+          >
+            {person.portrait ? (
+              <Picture
+                media={person.portrait}
+                priority
+                sizes="16vw"
+                className="block w-full"
+                imgClassName="w-full h-auto [mix-blend-mode:screen]"
+              />
+            ) : (
+              <CharacterPreview
+                config={person.character as CharacterConfig}
+                alt={`${person.name}'s character`}
+                className="w-full drop-shadow-[0_30px_50px_rgba(0,0,0,0.85)]"
+              />
+            )}
+          </motion.div>
+        ) : null}
 
+        {/* Identity. */}
         <div
           className="absolute z-30"
           style={{ left: `${IDENTITY.l}%`, top: `${IDENTITY.t}%`, width: `${IDENTITY.w}%` }}
@@ -122,12 +149,16 @@ export function SpatialWorld({
           <IdentityBlock person={person} />
         </div>
 
+        {/* Spaces. */}
         {spaces.slice(0, slots.length).map((space, i) => {
           const slot = slots[i]!;
           const geo = cylinder(slot.card, 1);
           const count = repo.listItems(space.id).length;
 
           return (
+            // A wrapper element here must not carry `preserve-3d`: that
+            // establishes a containing block, and a zero-height static wrapper
+            // would then collapse every percentage offset inside it to 0.
             <Fragment key={space.id}>
               {slot.meta ? (
                 <div
@@ -148,6 +179,9 @@ export function SpatialWorld({
                 initial={strength ? { opacity: 0, y: 18 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
+                // Rotation and depth go through motion's own transform props —
+                // a `transform` string in `style` is overwritten by the
+                // animation and silently lost.
                 style={{
                   left: `${slot.card.l}%`,
                   top: `${slot.card.t}%`,
@@ -171,9 +205,19 @@ export function SpatialWorld({
         })}
       </motion.div>
 
-      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-[14%] bg-gradient-to-r from-void to-transparent" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 w-[14%] bg-gradient-to-l from-void to-transparent" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[16%] bg-gradient-to-t from-void to-transparent" />
+      {/* Edge vignettes keep the eye in the middle of the world. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 w-[14%] bg-gradient-to-r from-void to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 w-[14%] bg-gradient-to-l from-void to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[16%] bg-gradient-to-t from-void to-transparent"
+      />
     </div>
   );
 }

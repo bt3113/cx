@@ -7,7 +7,12 @@
  */
 
 /** Trailing slash included, e.g. `/cx/`. */
-export const BASE_URL: string = import.meta.env.BASE_URL || '/';
+/**
+ * Build scripts import this module in plain Node, where `import.meta.env`
+ * does not exist, so the Vite value is read defensively.
+ */
+export const BASE_URL: string =
+  (import.meta as { env?: { BASE_URL?: string } }).env?.BASE_URL || '/cx/';
 
 /** No trailing slash, for react-router's `basename`, e.g. `/cx`. */
 export const ROUTER_BASENAME: string = BASE_URL.replace(/\/$/, '');
@@ -68,7 +73,6 @@ export const routes = {
   studioItem: (id: string) => `/studio/items/${id}`,
   studioContent: () => '/studio/content',
   studioAppearance: () => '/studio/appearance',
-  studioCharacter: () => '/studio/character',
   studioStory: () => '/studio/story',
   studioAnalytics: () => '/studio/analytics',
   studioMediaKit: () => '/studio/media-kit',

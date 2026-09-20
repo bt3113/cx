@@ -15,6 +15,7 @@ import { ArrowBadge, DisclosureChip, SpaceNumber } from '@/design/primitives';
 import { useIsDesktopWorld, useScrollLock } from '@/lib/hooks';
 import { Picture } from '@/lib/media';
 import { repo } from '@/lib/repo';
+import { usePublicWorld } from '@/stores/studio';
 import { routes } from '@/lib/routing/base';
 import type { Item, Person, Space } from '@/lib/schema';
 import { Meta } from '@/seo/Meta';
@@ -29,7 +30,12 @@ export function SpacePanel() {
   const navigate = useNavigate();
   const isDesktop = useIsDesktopWorld();
 
-  const space = spaceSlug ? repo.getSpace(person.id, spaceSlug) : undefined;
+  const world = usePublicWorld(person.handle);
+  const space = world
+    ? world.spaces.find((s) => s.slug === spaceSlug)
+    : spaceSlug
+      ? repo.getSpace(person.id, spaceSlug)
+      : undefined;
   useScrollLock(Boolean(space) && !isDesktop);
 
   // Escape closes the Space and returns to the world.
@@ -44,7 +50,7 @@ export function SpacePanel() {
 
   if (!space) return <NotFoundRoute kind="space" />;
 
-  const items = repo.listItems(space.id);
+  const items = world ? world.items.filter((i) => i.spaceId === space.id) : repo.listItems(space.id);
   const close = routes.profile(person.handle);
 
   return (

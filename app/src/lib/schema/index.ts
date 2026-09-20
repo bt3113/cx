@@ -128,6 +128,23 @@ export const themeSchema = z.object({
 });
 export type Theme = z.infer<typeof themeSchema>;
 
+/**
+ * A generated character, for creators without a photograph. Kept loose here
+ * so the schema module does not depend on the character feature; the strict
+ * shape lives in features/character/schema.ts.
+ */
+export const personCharacterSchema = z
+  .object({
+    style: z.string(),
+    seed: z.string(),
+    skinTone: z.string(),
+    hairColour: z.string(),
+    clothingColour: z.string(),
+    background: z.string(),
+    photo: z.string().nullable(),
+  })
+  .nullable();
+
 export const personSchema = z.object({
   id: idSchema,
   handle: handleSchema,
@@ -138,6 +155,8 @@ export const personSchema = z.object({
   timezone: z.string().max(40),
   avatar: mediaSchema,
   portrait: mediaSchema.nullable(),
+  /** Used as the world's anchor when there is no portrait photograph. */
+  character: personCharacterSchema.default(null),
   socials: z.array(socialSchema),
   theme: themeSchema,
   plan: planSchema,

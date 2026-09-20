@@ -168,16 +168,16 @@
     ]
   },
   "spaces/photography": {
-    "w": 192,
-    "h": 125,
+    "w": 186,
+    "h": 119,
     "formats": [
       "avif",
       "webp"
     ]
   },
   "spaces/photography@2x": {
-    "w": 192,
-    "h": 125,
+    "w": 186,
+    "h": 119,
     "formats": [
       "avif",
       "webp"
@@ -234,6 +234,70 @@
   "spaces/books@2x": {
     "w": 900,
     "h": 765,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/lens": {
+    "w": 96,
+    "h": 84,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/earcup": {
+    "w": 96,
+    "h": 84,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/knit-weave": {
+    "w": 100,
+    "h": 88,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/weight-end": {
+    "w": 104,
+    "h": 90,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/deck": {
+    "w": 108,
+    "h": 92,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/pad": {
+    "w": 108,
+    "h": 92,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/ridge": {
+    "w": 112,
+    "h": 96,
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "detail/surf": {
+    "w": 116,
+    "h": 100,
     "formats": [
       "avif",
       "webp"
@@ -442,38 +506,6 @@
   "aura/ink": {
     "w": 900,
     "h": 560,
-    "formats": [
-      "avif",
-      "webp"
-    ]
-  },
-  "plinth/optics": {
-    "w": 760,
-    "h": 760,
-    "formats": [
-      "avif",
-      "webp"
-    ]
-  },
-  "plinth/audio": {
-    "w": 760,
-    "h": 760,
-    "formats": [
-      "avif",
-      "webp"
-    ]
-  },
-  "plinth/studio": {
-    "w": 760,
-    "h": 760,
-    "formats": [
-      "avif",
-      "webp"
-    ]
-  },
-  "plinth/field": {
-    "w": 760,
-    "h": 760,
     "formats": [
       "avif",
       "webp"

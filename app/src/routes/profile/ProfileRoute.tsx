@@ -11,6 +11,7 @@ import { Outlet, useParams } from 'react-router';
 import { ProfileShell, WorldFooterRail } from '@/app/ProfileChrome';
 import { useIsDesktopWorld } from '@/lib/hooks';
 import { repo } from '@/lib/repo';
+import { usePublicWorld } from '@/stores/studio';
 import { MobileWorld } from '@/world/MobileWorld';
 import { SpatialWorld } from '@/world/SpatialWorld';
 import { NotFoundRoute } from '@/routes/NotFound';
@@ -25,10 +26,13 @@ export function ProfileRoute() {
   const [connectOpen, setConnectOpen] = useState(false);
   const { spaceSlug } = useParams();
 
-  const person = handle ? repo.getPerson(handle) : undefined;
+  // A world published from the Studio in this browser wins over the seeded
+  // catalogue, so a creator's own edits show on their public profile.
+  const world = usePublicWorld(handle);
+  const person = world?.person ?? (handle ? repo.getPerson(handle) : undefined);
   if (!person) return <NotFoundRoute kind="profile" />;
 
-  const spaces = repo.listSpaces(person.id);
+  const spaces = world?.spaces ?? repo.listSpaces(person.id);
   const panelOpen = Boolean(spaceSlug);
 
   return (
