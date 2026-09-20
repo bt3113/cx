@@ -1,13 +1,17 @@
-/** Tiny class-name joiner. A dependency would not earn its bytes here. */
-export type ClassValue = string | number | null | false | undefined | ClassValue[];
+/**
+ * Class-name joiner with Tailwind conflict resolution.
+ *
+ * `tailwind-merge` is not optional here. Every vendored component composes a
+ * `cva` base with a caller's `className`, and without conflict resolution a
+ * caller passing `px-6` to a button whose base sets `px-4` gets both classes
+ * and whichever the stylesheet happens to order last — so overrides appear
+ * to work at random. This is the same helper shadcn's own components assume.
+ */
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export type { ClassValue };
 
 export function cn(...parts: ClassValue[]): string {
-  const out: string[] = [];
-  const walk = (v: ClassValue) => {
-    if (!v && v !== 0) return;
-    if (Array.isArray(v)) v.forEach(walk);
-    else out.push(String(v));
-  };
-  parts.forEach(walk);
-  return out.join(' ');
+  return twMerge(clsx(parts));
 }

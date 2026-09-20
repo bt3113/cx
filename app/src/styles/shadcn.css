@@ -1,0 +1,114 @@
+/**
+ * The bridge between shadcn/ui's semantic tokens and the Zat palette.
+ *
+ * The vendored components in `components/ui` are written against a fixed
+ * vocabulary — background, foreground, card, primary, muted, border, ring
+ * and so on. Rather than editing forty-six files to use Zat's own names,
+ * the vocabulary is defined once here in Zat's colours. A component dropped
+ * in from the registry then looks like part of this product with no edits,
+ * and re-vendoring never overwrites design decisions.
+ *
+ * The product has one ground and no theme switcher, so `dark` is always on
+ * and the `dark:` variants upstream relies on always apply.
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --radius: 0.75rem;
+
+  /* Ground and text. */
+  --background: #0a0a0b;
+  --foreground: #faf8f5;
+
+  /* Raised surfaces. Cards sit above the ground, popovers above cards. */
+  --card: #141416;
+  --card-foreground: #faf8f5;
+  --popover: #16161a;
+  --popover-foreground: #faf8f5;
+
+  /* Bronze is the product's only accent. On it, type goes near-black. */
+  --primary: #d8a96a;
+  --primary-foreground: #0a0a0b;
+
+  /* Quiet fills, layered with alpha so they work over any surface. */
+  --secondary: rgb(255 255 255 / 0.075);
+  --secondary-foreground: #faf8f5;
+  --muted: rgb(255 255 255 / 0.045);
+  --muted-foreground: rgb(250 248 245 / 0.62);
+  --accent: rgb(255 255 255 / 0.09);
+  --accent-foreground: #faf8f5;
+
+  --destructive: #ef2b3a;
+  --destructive-foreground: #faf8f5;
+
+  --border: rgb(255 255 255 / 0.09);
+  --input: rgb(255 255 255 / 0.14);
+  --ring: #d8a96a;
+
+  /* Charts read as one bronze family rather than a rainbow, with a single
+     cool tone held back for the comparison series. */
+  --chart-1: #d8a96a;
+  --chart-2: #b8813f;
+  --chart-3: #8e632f;
+  --chart-4: #f2d9b0;
+  --chart-5: #6f8fbf;
+
+  /* The Studio shell. Slightly darker than the ground it sits beside, so
+     the edge reads without needing a heavy border. */
+  --sidebar: #08080a;
+  --sidebar-foreground: rgb(250 248 245 / 0.62);
+  --sidebar-primary: #d8a96a;
+  --sidebar-primary-foreground: #0a0a0b;
+  --sidebar-accent: rgb(255 255 255 / 0.06);
+  --sidebar-accent-foreground: #faf8f5;
+  --sidebar-border: rgb(255 255 255 / 0.07);
+  --sidebar-ring: #d8a96a;
+}
+
+/**
+ * `@theme inline` is what turns the variables above into utilities —
+ * `bg-background`, `text-muted-foreground`, `border-border` — which is the
+ * vocabulary every vendored component is written in.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}

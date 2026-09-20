@@ -1,6 +1,8 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 @import './fonts.css';
 @import './tokens.css';
+@import './shadcn.css';
 
 @layer base {
   *,
@@ -129,6 +131,20 @@
     border: 1px solid var(--color-line);
     backdrop-filter: blur(20px) saturate(1.1);
     -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  }
+
+  /*
+    An opened Space sits over the whole world, so it needs far more ground
+    than a card does — at card opacity the portrait and twelve covers read
+    straight through the panel and compete with its own content.
+  */
+  .glass-solid {
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.05) 0%, rgb(255 255 255 / 0.02) 100%),
+      rgb(10 10 11 / 0.93);
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(28px) saturate(1.15);
+    -webkit-backdrop-filter: blur(28px) saturate(1.15);
   }
 
   /* Bronze-lit edge for an opened Space, matching the reference panel. */

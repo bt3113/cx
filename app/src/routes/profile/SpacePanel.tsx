@@ -13,7 +13,6 @@ import { X } from 'lucide-react';
 import { cn } from '@/design/cn';
 import { ArrowBadge, DisclosureChip, SpaceNumber } from '@/design/primitives';
 import { useIsDesktopWorld, useScrollLock } from '@/lib/hooks';
-import { Picture } from '@/lib/media';
 import { repo } from '@/lib/repo';
 import { usePublicWorld } from '@/stores/studio';
 import { routes } from '@/lib/routing/base';
@@ -22,6 +21,7 @@ import { Meta } from '@/seo/Meta';
 import { spaceJsonLd } from '@/seo/jsonld';
 import { NotFoundRoute } from '@/routes/NotFound';
 import { BuyLink, itemPrice } from '@/features/commerce/BuyLink';
+import { ItemThumb } from '@/features/catalogue/ItemThumb';
 import { SaveButton } from '@/features/saves/SaveButton';
 import { ShareButton } from '@/features/share/ShareButton';
 
@@ -122,14 +122,15 @@ function PanelHeader({
 function ItemTile({
   item,
   handle,
-  spaceSlug,
+  space,
   className,
 }: {
   item: Item;
   handle: string;
-  spaceSlug: string;
+  space: Space;
   className?: string;
 }) {
+  const spaceSlug = space.slug;
   const price = itemPrice(item);
 
   return (
@@ -142,11 +143,11 @@ function ItemTile({
           'group-focus-within/tile:border-bronze-500',
         )}
       >
-        <Picture
-          media={item.image}
+        <ItemThumb
+          item={item}
+          space={space}
           sizes="164px"
-          className="h-full w-full"
-          imgClassName="h-full w-full object-cover transition-transform duration-700 group-hover/tile:scale-105"
+          imgClassName="transition-transform duration-700 group-hover/tile:scale-105"
         />
       </div>
 
@@ -220,7 +221,7 @@ function DesktopPanel({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          'glass glass-lit pointer-events-auto flex max-h-full w-full max-w-[1080px] flex-col',
+          'glass-solid glass-lit pointer-events-auto flex max-h-full w-full max-w-[1120px] flex-col',
           'overflow-hidden rounded-[var(--radius-panel)]',
         )}
         role="region"
@@ -232,12 +233,7 @@ function DesktopPanel({
 
         <div className="no-scrollbar mt-6 flex items-stretch gap-5 overflow-x-auto px-8 pb-2">
           {items.map((item) => (
-            <ItemTile
-              key={item.id}
-              item={item}
-              handle={person.handle}
-              spaceSlug={space.slug}
-            />
+            <ItemTile key={item.id} item={item} handle={person.handle} space={space} />
           ))}
         </div>
 
@@ -317,12 +313,9 @@ function MobileSheet({
                       <BuyLink item={item} className="relative z-1" />
                     </span>
                   </span>
-                  <Picture
-                    media={item.image}
-                    sizes="72px"
-                    className="size-[68px] shrink-0 overflow-hidden rounded-xl border border-line"
-                    imgClassName="size-[68px] object-cover"
-                  />
+                  <span className="border-line size-[68px] shrink-0 overflow-hidden rounded-xl border">
+                    <ItemThumb item={item} space={space} sizes="72px" />
+                  </span>
                 </div>
               </li>
             );
