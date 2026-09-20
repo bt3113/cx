@@ -22,10 +22,10 @@ export function Wordmark({
   size?: 'sm' | 'md' | 'lg';
   as?: 'span' | 'h1';
 }) {
-  const scale = { sm: 'text-[20px]', md: 'text-[26px]', lg: 'text-[34px]' }[size];
+  const scale = { sm: 'text-[26px]', md: 'text-[33px]', lg: 'text-[44px]' }[size];
   return (
     <As className={cn('font-display inline-flex items-baseline leading-none', scale, className)}>
-      <span className="tracking-[-0.03em] text-ink">Zat</span>
+      <span className="tracking-[0.005em] text-ink">Zat</span>
       <span
         aria-hidden="true"
         className="ml-[0.12em] inline-block rounded-full bg-dot"
@@ -262,7 +262,7 @@ export function Stat({
   return (
     <div className={cn('min-w-0', className)}>
       <dt className="kicker mb-2">{label}</dt>
-      <dd className="font-display text-[26px] leading-none text-ink">{value}</dd>
+      <dd className="font-display tnum text-d6 leading-none text-ink">{value}</dd>
       {hint ? <p className="mt-1.5 text-[12px] text-ink-3">{hint}</p> : null}
     </div>
   );

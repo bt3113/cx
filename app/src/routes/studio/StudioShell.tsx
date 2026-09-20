@@ -170,7 +170,7 @@ export function StudioHeader({
   return (
     <header className="mb-8 flex flex-wrap items-start justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="font-display mb-2 text-[clamp(24px,3vw,34px)] leading-tight">{title}</h1>
+        <h1 className="font-display mb-2 text-d4 leading-tight">{title}</h1>
         <p className="max-w-[62ch] text-[14px] leading-relaxed text-ink-2">{lede}</p>
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap gap-2">{actions}</div> : null}

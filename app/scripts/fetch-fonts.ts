@@ -26,8 +26,22 @@ type Face = {
   unicodeRange: string;
 };
 
+/**
+ * Two families, chosen against the reference art direction rather than by
+ * default. Cormorant Garamond is the old-style serif the reference sets the
+ * wordmark and the creator's name in — low stroke weight, tall ascenders,
+ * generous counters — and it holds its refinement at display size on a
+ * near-black ground where a Didone like Playfair goes brittle. Inter carries
+ * every piece of interface text, where neutrality is the point.
+ *
+ * Italics are fetched for the serif only: the product sets pull quotes and
+ * creator asides in italic serif and nothing in italic sans.
+ */
 const FAMILIES = [
-  { name: 'Playfair Display', spec: 'Playfair+Display:ital,wght@0,400;0,500;0,600;0,700' },
+  {
+    name: 'Cormorant Garamond',
+    spec: 'Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400',
+  },
   { name: 'Inter', spec: 'Inter:wght@300;400;500;600;700' },
 ];
 

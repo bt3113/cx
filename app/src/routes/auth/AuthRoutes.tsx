@@ -127,7 +127,7 @@ function AuthShell({
           <Wordmark />
         </Link>
         <div className="mx-auto max-w-[440px] pt-[8vh]">
-          <h1 className="font-display mb-3 text-[clamp(28px,4.4vw,42px)] leading-tight">{title}</h1>
+          <h1 className="font-display mb-3 text-d3 leading-tight">{title}</h1>
           <p className="mb-9 text-[15px] leading-relaxed text-ink-2">{subtitle}</p>
           {children}
           <div className="mt-8 border-t border-line pt-6 text-[13.5px] text-ink-3">{footer}</div>

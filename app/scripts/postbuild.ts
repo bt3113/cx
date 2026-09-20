@@ -164,7 +164,7 @@ async function loadFonts(): Promise<Font[]> {
   return [
     { name: 'Inter', data: await readFile(resolve(dir, 'inter-400.ttf')), weight: 400, style: 'normal' },
     { name: 'Inter', data: await readFile(resolve(dir, 'inter-600.ttf')), weight: 600, style: 'normal' },
-    { name: 'Playfair', data: await readFile(resolve(dir, 'playfair-500.ttf')), weight: 500, style: 'normal' },
+    { name: 'Cormorant', data: await readFile(resolve(dir, 'cormorant-500.ttf')), weight: 500, style: 'normal' },
   ];
 }
 
@@ -215,11 +215,11 @@ async function renderOg(route: RouteMeta, fonts: Font[]): Promise<Buffer | null>
       style: { position: 'relative', display: 'flex', flexDirection: 'column', padding: '64px 72px', height: '100%', width: artUri ? '700px' : '100%' },
       children: [
         el('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 'auto' }, children: [
-          el('div', { style: { fontFamily: 'Playfair', fontSize: 40, color: '#faf8f5' }, children: 'Zat' }),
+          el('div', { style: { fontFamily: 'Cormorant', fontSize: 52, color: '#faf8f5' }, children: 'Zat' }),
           el('div', { style: { width: 9, height: 9, borderRadius: 9, background: '#ef2b3a' } }),
         ] }),
         el('div', { style: { fontFamily: 'Inter', fontSize: 20, letterSpacing: 3, textTransform: 'uppercase', color: '#d8a96a', marginBottom: 18 }, children: kicker }),
-        el('div', { style: { fontFamily: 'Playfair', fontSize: heading.length > 42 ? 54 : 70, lineHeight: 1.06, color: '#faf8f5', marginBottom: 20 }, children: heading }),
+        el('div', { style: { fontFamily: 'Cormorant', fontSize: heading.length > 42 ? 68 : 88, lineHeight: 1.06, color: '#faf8f5', marginBottom: 20 }, children: heading }),
         sub ? el('div', { style: { fontFamily: 'Inter', fontSize: 24, lineHeight: 1.45, color: 'rgba(250,248,245,0.62)' }, children: clamp(sub, 150) }) : null,
       ].filter(Boolean),
     }),

@@ -118,8 +118,14 @@ export function SpaceCard({
 
         <div className="absolute inset-x-3.5 bottom-3 z-10 flex items-end justify-between gap-2.5">
           <div className="min-w-0">
+            {/*
+              `break-words` matters on the narrow vertical cards: a single
+              long Space name — "Photography", "Wardrobe" — is one unbreakable
+              word wider than the space left beside the arrow, so without it
+              the clamp simply cuts the last letters off.
+            */}
             {overlay === 'full' || overlay === 'title' ? (
-              <h3 className="mb-1 line-clamp-2 text-[13.5px] font-medium leading-tight text-ink">
+              <h3 className="mb-1 line-clamp-2 text-[13px] leading-tight font-medium break-words text-ink">
                 {space.title}
               </h3>
             ) : null}

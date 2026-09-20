@@ -41,7 +41,7 @@ export function ContentIndexRoute() {
         <div className="pb-32 pt-24">
           <Section width="wide">
             <p className="kicker mb-4">Projects</p>
-            <h1 className="font-display mb-4 text-[clamp(30px,4.4vw,52px)] leading-[1.02]">
+            <h1 className="font-display mb-4 text-d2 leading-[1.02]">
               What {person.name.split(' ')[0]} has published
             </h1>
             <p className="mb-12 max-w-[58ch] text-[15px] leading-relaxed text-ink-2">
@@ -151,7 +151,7 @@ export function ContentDetailRoute() {
             <p className="kicker mb-4">
               {CONTENT_LABEL[content.type]} · {dateLabel(content.publishedAt)}
             </p>
-            <h1 className="font-display mb-5 text-[clamp(28px,4.2vw,50px)] leading-[1.03]">
+            <h1 className="font-display mb-5 text-d2 leading-[1.03]">
               {content.title}
             </h1>
             <p className="mb-8 max-w-[58ch] text-[15.5px] leading-relaxed text-ink-2">
@@ -181,7 +181,7 @@ export function ContentDetailRoute() {
             ) : null}
 
             <section className="border-t border-line pt-12">
-              <h2 className="font-display mb-2 text-[clamp(22px,2.6vw,30px)]">
+              <h2 className="font-display mb-2 text-d5">
                 Everything in this {CONTENT_LABEL[content.type].toLowerCase()}
               </h2>
               <p className="mb-8 max-w-[54ch] text-[14px] leading-relaxed text-ink-3">
@@ -268,7 +268,7 @@ export function AboutRoute() {
                 imgClassName="size-20 object-cover"
               />
               <div className="min-w-0">
-                <h1 className="font-display text-[clamp(28px,4vw,46px)] leading-tight">
+                <h1 className="font-display text-d3 leading-tight">
                   {person.name}
                 </h1>
                 <p className="mt-1.5 text-[13.5px] text-ink-3">
@@ -284,28 +284,28 @@ export function AboutRoute() {
             <dl className="mb-14 grid grid-cols-2 gap-6 border-y border-line py-8 sm:grid-cols-4">
               <div>
                 <dt className="kicker mb-2">Spaces</dt>
-                <dd className="font-display text-[30px] leading-none">{spaces.length}</dd>
+                <dd className="font-display text-d5 leading-none">{spaces.length}</dd>
               </div>
               <div>
                 <dt className="kicker mb-2">Items</dt>
-                <dd className="font-display text-[30px] leading-none">{items.length}</dd>
+                <dd className="font-display text-d5 leading-none">{items.length}</dd>
               </div>
               <div>
                 <dt className="kicker mb-2">On Zat since</dt>
-                <dd className="font-display text-[30px] leading-none">
+                <dd className="font-display text-d5 leading-none">
                   {new Date(person.joinedAt).getFullYear()}
                 </dd>
               </div>
               <div>
                 <dt className="kicker mb-2">Last updated</dt>
-                <dd className="font-display text-[30px] leading-none">
+                <dd className="font-display text-d5 leading-none">
                   {new Date(person.updatedAt).toLocaleDateString('en-GB', { month: 'short' })}
                 </dd>
               </div>
             </dl>
 
             <section className="mb-14">
-              <h2 className="font-display mb-3 text-[clamp(20px,2.4vw,28px)]">
+              <h2 className="font-display mb-3 text-d5">
                 How {person.name.split(' ')[0]} discloses
               </h2>
               <p className="mb-6 max-w-[56ch] text-[14px] leading-relaxed text-ink-3">
@@ -323,7 +323,7 @@ export function AboutRoute() {
             </section>
 
             <section>
-              <h2 className="font-display mb-6 text-[clamp(20px,2.4vw,28px)]">Where to find them</h2>
+              <h2 className="font-display mb-6 text-d5">Where to find them</h2>
               <ul className="grid gap-2.5 sm:grid-cols-2">
                 {person.socials.map((social) => (
                   <li key={social.network + social.handle}>

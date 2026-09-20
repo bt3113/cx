@@ -11,6 +11,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
 import { Grid2x2, Home, Send, User } from 'lucide-react';
 import { cn } from '@/design/cn';
+import { networkIcon, networkLabel } from '@/design/network-icons';
 import { Wordmark } from '@/design/primitives';
 import { routes } from '@/lib/routing/base';
 import type { Person } from '@/lib/schema';
@@ -168,17 +169,22 @@ export function WorldFooterRail({ person }: { person: Person }) {
       </p>
       <div className="pointer-events-auto flex items-center gap-4">
         <span aria-hidden="true" className="h-px w-8 bg-line-2" />
-        {person.socials.slice(0, 3).map((s) => (
-          <a
-            key={s.network + s.handle}
-            href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[12px] text-ink-3 transition-colors hover:text-ink"
-          >
-            {s.network}
-          </a>
-        ))}
+        {person.socials.slice(0, 3).map((s) => {
+          const Icon = networkIcon(s.network);
+          return (
+            <a
+              key={s.network + s.handle}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${networkLabel(s.network)} — ${s.handle}`}
+              className="grid size-8 place-items-center rounded-full text-ink-3 transition-colors hover:bg-white/8 hover:text-ink"
+            >
+              <Icon className="size-[16px]" strokeWidth={1.7} />
+              <span className="sr-only">{`${networkLabel(s.network)}: ${s.handle}`}</span>
+            </a>
+          );
+        })}
       </div>
     </div>
   );
@@ -196,7 +202,11 @@ export function ProfileShell({
   return (
     <div className="relative min-h-dvh bg-void">
       <ProfileTopBar person={person} onConnect={onConnect} />
-      <main id="main">{children}</main>
+      {/* Clearance for the floating navigation, which is fixed over the
+          bottom of every profile page. */}
+      <main id="main" className="pb-28">
+        {children}
+      </main>
       <ProfileBottomNav person={person} onConnect={onConnect} />
     </div>
   );

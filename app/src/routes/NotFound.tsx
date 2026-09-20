@@ -55,7 +55,7 @@ export function NotFoundRoute({ kind = 'page' }: { kind?: keyof typeof COPY }) {
 
           <div className="mx-auto max-w-[640px] pb-14 pt-[14vh] text-center">
             <p className="kicker mb-5">Error 404</p>
-            <h1 className="font-display mb-5 text-[clamp(34px,6vw,58px)] leading-[1.02]">
+            <h1 className="font-display mb-5 text-d2 leading-[1.02]">
               {copy.title}
             </h1>
             <p className="mx-auto mb-9 max-w-[460px] text-[16px] leading-relaxed text-ink-2">

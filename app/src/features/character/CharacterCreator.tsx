@@ -141,7 +141,7 @@ export function CharacterCreator({ handle, initial }: { handle: string; initial:
       <section className="space-y-7 pb-20">
         <div>
           <p className="kicker">Zero-budget character system</p>
-          <h1 className="mt-2 font-display text-4xl tracking-[-0.035em] text-ink md:text-5xl">Make the person recognisable, not configurable forever.</h1>
+          <h1 className="mt-2 font-display text-d3 leading-[1.06] tracking-[0] text-ink">Make the person recognisable, not configurable forever.</h1>
           <p className="mt-4 max-w-2xl text-sm leading-6 text-ink-2">A small curated system: safe body presets, face presets, skin, hair, wardrobe and three restrained poses. The saved JSON is canonical; WebGL and the static fallback both render from it.</p>
         </div>
 

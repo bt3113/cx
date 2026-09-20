@@ -64,6 +64,114 @@ async function main() {
   });
 
   // --- content relationship, both directions -----------------------------
+  // --- the world is actually operable -----------------------------------
+  //
+  // Added after a report that nothing on the profile was clickable, which
+  // was correct: the cards sit at a negative translateZ inside a preserve-3d
+  // container, so the container itself won every hit test. Navigating by URL
+  // — which is all the crawler did — could never have caught it. These
+  // journeys click.
+  await run('every Space card in the world opens its Space', async () => {
+    const page = await freshPage(browser);
+    await page.goto(`${BASE}/alexden`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(900);
+
+    const cards = page.locator('main a[aria-label*="\u2014"][href*="/alexden/"]');
+    const total = await cards.count();
+    assert(total >= 12, `expected 12 Space cards in the world, found ${total}`);
+
+    for (let i = 0; i < total; i += 1) {
+      await page.goto(`${BASE}/alexden`, { waitUntil: 'networkidle' });
+      await page.waitForTimeout(700);
+      const card = page.locator('main a[aria-label*="\u2014"][href*="/alexden/"]').nth(i);
+      const href = await card.getAttribute('href');
+      await card.click();
+      await page.waitForTimeout(500);
+      assert(
+        page.url().endsWith(href ?? '\u0000'),
+        `card ${i} (${href}) did not navigate — landed on ${page.url()}`,
+      );
+      assert(
+        await page.getByRole('region', { name: /Space$/ }).count(),
+        `card ${i} (${href}) navigated but no Space panel opened`,
+      );
+    }
+  });
+
+  await run('every Space holds five items', async () => {
+    const page = await freshPage(browser);
+    const slugs = [
+      'wardrobe', 'music', 'travel', 'memories', 'books', 'work',
+      'photography', 'fitness', 'gaming', 'movies', 'ideas', 'life',
+    ];
+    const short: string[] = [];
+    for (const slug of slugs) {
+      await page.goto(`${BASE}/alexden/${slug}`, { waitUntil: 'networkidle' });
+      const n = await page.locator(`[role="region"] a[href*="/alexden/${slug}/"]`).count();
+      if (n !== 5) short.push(`${slug}=${n}`);
+    }
+    assert(!short.length, `Spaces not holding five items: ${short.join(', ')}`);
+  });
+
+  await run('buy is one click from an opened Space', async () => {
+    const page = await freshPage(browser);
+    await page.goto(`${BASE}/alexden/books`, { waitUntil: 'networkidle' });
+
+    const buys = page.locator('[role="region"] a[data-buy]');
+    const n = await buys.count();
+    assert(n >= 4, `expected a buy link on each purchasable book, found ${n}`);
+
+    const first = buys.first();
+    const href = await first.getAttribute('href');
+    const rel = (await first.getAttribute('rel')) ?? '';
+    assert(href?.startsWith('http'), `buy link is not absolute: ${href}`);
+    assert(rel.includes('noopener') && rel.includes('nofollow'), `weak rel on buy link: ${rel}`);
+    assert((await first.getAttribute('target')) === '_blank', 'buy link does not open a new tab');
+
+    // The affiliate book must additionally be marked as a paid relationship.
+    const affiliate = page.locator('[role="region"] a[data-buy="the-daily-stoic"]');
+    const arel = (await affiliate.getAttribute('rel')) ?? '';
+    assert(arel.includes('sponsored'), `affiliate buy link is not marked sponsored: ${arel}`);
+
+    // And clicking it really does leave for the retailer rather than
+    // navigating the Space panel out from under the visitor.
+    //
+    // The popup's own URL is not asserted: this environment has no egress,
+    // so the new tab lands on chrome-error:// whatever it was pointed at.
+    // What is under test is that a new tab is opened at all and that the
+    // click does not also navigate the page behind it — the failure mode the
+    // nested-anchor restructure introduced.
+    const [popup] = await Promise.all([page.waitForEvent('popup'), first.click()]);
+    assert(popup, 'buy click opened no new tab');
+    assert(page.url().endsWith('/alexden/books'), `buy click also navigated the page to ${page.url()}`);
+    await popup.close();
+  });
+
+  await run('mobile world opens a Space and can buy from it', async () => {
+    const ctx = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+      deviceScaleFactor: 3,
+    });
+    const page = await ctx.newPage();
+    page.on('pageerror', (e) => {
+      throw new Error(`page error: ${e.message}`);
+    });
+    await page.goto(`${BASE}/alexden`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(800);
+
+    const card = page.locator('main a[href*="/alexden/"][aria-label*="\u2014"]').first();
+    const href = await card.getAttribute('href');
+    await card.click();
+    await page.waitForTimeout(600);
+    assert(page.url().endsWith(href ?? '\u0000'), `mobile card did not navigate — on ${page.url()}`);
+
+    const buys = page.locator('[role="region"] a[data-buy]');
+    assert(await buys.count(), 'no buy link inside the opened Space on mobile');
+    await ctx.close();
+  });
+
   await run('content lists its items, item lists its content', async () => {
     const page = await freshPage(browser);
     await page.goto(`${BASE}/alexden/content/whats-in-my-camera-bag-2026`, { waitUntil: 'networkidle' });

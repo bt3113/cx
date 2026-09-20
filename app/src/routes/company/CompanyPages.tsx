@@ -36,7 +36,7 @@ function Prose({
     <>
       <Section width="narrow" className="pb-10 pt-16">
         <p className="kicker mb-5">{kicker}</p>
-        <h1 className="font-display mb-5 text-[clamp(32px,5vw,54px)] leading-[1.03]">{title}</h1>
+        <h1 className="font-display mb-5 text-d2 leading-[1.03]">{title}</h1>
         <p className="text-[clamp(15px,1.6vw,18px)] leading-relaxed text-ink-2">{lede}</p>
         {draft ? (
           <p className="mt-7 rounded-2xl border border-bronze-500/30 bg-bronze-500/5 px-5 py-4 text-[13px] leading-relaxed text-ink-2">
@@ -147,7 +147,7 @@ export function ContactRoute() {
         {sent ? (
           <div role="status" className="rounded-[var(--radius-panel)] border border-[color:var(--color-positive)]/40 bg-[color:var(--color-positive)]/5 p-7 text-center">
             <Check className="mx-auto mb-4 size-6 text-[color:var(--color-positive)]" strokeWidth={2} />
-            <h2 className="font-display mb-2 text-[22px]">Message ready to send</h2>
+            <h2 className="font-display mb-2 text-d6">Message ready to send</h2>
             <p className="mx-auto max-w-[46ch] text-[14px] leading-relaxed text-ink-2">
               Your message validated correctly and is held in this page. There is no mail service
               connected to this build, so nothing has actually been transmitted — that would need a

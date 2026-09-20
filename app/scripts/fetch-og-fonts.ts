@@ -15,7 +15,7 @@ const UA = 'Mozilla/5.0';
 const FACES = [
   { file: 'inter-400.ttf', spec: 'Inter:wght@400' },
   { file: 'inter-600.ttf', spec: 'Inter:wght@600' },
-  { file: 'playfair-500.ttf', spec: 'Playfair+Display:wght@500' },
+  { file: 'cormorant-500.ttf', spec: 'Cormorant+Garamond:wght@500' },
 ];
 
 async function main() {

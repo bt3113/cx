@@ -18,30 +18,15 @@ import { Picture } from '@/lib/media';
 import { repo, resolvePath } from '@/lib/repo';
 import { usePublicWorld } from '@/stores/studio';
 import { routes } from '@/lib/routing/base';
-import {
-  CONTENT_LABEL,
-  DISCLOSURE_META,
-  FREQUENCY_LABEL,
-  type Item,
-} from '@/lib/schema';
+import { CONTENT_LABEL, DISCLOSURE_META, FREQUENCY_LABEL } from '@/lib/schema';
 import { Meta } from '@/seo/Meta';
 import { itemJsonLd } from '@/seo/jsonld';
 import { NotFoundRoute } from '@/routes/NotFound';
 import { ConnectSheet } from '@/routes/profile/ConnectSheet';
 import { SaveButton } from '@/features/saves/SaveButton';
 import { ShareButton } from '@/features/share/ShareButton';
+import { itemPrice, outboundRel } from '@/features/commerce/BuyLink';
 import { track } from '@/lib/analytics/events';
-
-const CURRENCY: Record<Item['currency'], string> = { GBP: '£', USD: '$', EUR: '€' };
-
-function formatPrice(item: Item): string | null {
-  if (item.price === null) return null;
-  if (item.price === 0) return 'Free';
-  return `${CURRENCY[item.currency]}${item.price.toLocaleString('en-GB', {
-    minimumFractionDigits: item.price % 1 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
 
 export function ItemRoute() {
   const { handle, spaceSlug, itemSlug } = useParams();
@@ -65,7 +50,7 @@ export function ItemRoute() {
   const disclosure = DISCLOSURE_META[item.disclosure];
   const seenIn = repo.contentForItem(item.id);
   const siblings = (world ? world.items.filter((i) => i.spaceId === space.id) : repo.listItems(space.id)).filter((i) => i.id !== item.id);
-  const price = formatPrice(item);
+  const price = itemPrice(item);
 
   return (
     <>
@@ -136,7 +121,7 @@ export function ItemRoute() {
               {/* --- the recommendation --------------------------------- */}
               <div className="min-w-0">
                 {item.brand ? <p className="kicker mb-3">{item.brand}</p> : null}
-                <h1 className="font-display mb-5 text-[clamp(30px,4.4vw,52px)] leading-[1.02]">
+                <h1 className="font-display mb-5 text-d2 leading-[1.02]">
                   {item.title}
                 </h1>
 
@@ -293,11 +278,7 @@ export function ItemRoute() {
                       onClick={() =>
                         track({ type: 'outbound', targetType: 'item', targetId: item.id })
                       }
-                      rel={
-                        item.disclosure === 'affiliate' || item.disclosure === 'sponsored'
-                          ? 'noopener noreferrer nofollow sponsored'
-                          : 'noopener noreferrer nofollow'
-                      }
+                      rel={outboundRel(item)}
                     >
                       Where I got it
                       <span aria-hidden="true">↗</span>
@@ -315,7 +296,7 @@ export function ItemRoute() {
             {/* --- seen in ------------------------------------------- */}
             {seenIn.length ? (
               <section className="mt-20 border-t border-line pt-12">
-                <h2 className="font-display mb-2 text-[clamp(22px,2.6vw,30px)]">Seen in</h2>
+                <h2 className="font-display mb-2 text-d5">Seen in</h2>
                 <p className="mb-7 max-w-[54ch] text-[14px] leading-relaxed text-ink-3">
                   Where this actually appears in {person.name.split(' ')[0]}&rsquo;s work. A
                   recommendation you can watch being used is a different kind of evidence.
@@ -365,7 +346,7 @@ export function ItemRoute() {
             {siblings.length ? (
               <section className="mt-16 border-t border-line pt-12">
                 <div className="mb-7 flex flex-wrap items-baseline justify-between gap-3">
-                  <h2 className="font-display text-[clamp(22px,2.6vw,30px)]">
+                  <h2 className="font-display text-d5">
                     Also in {space.title}
                   </h2>
                   <Link

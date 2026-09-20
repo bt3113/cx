@@ -13,10 +13,10 @@ import { Fragment, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { cn } from '@/design/cn';
 import { Picture } from '@/lib/media';
-import { CharacterPreview } from '@/features/character/CharacterBuilder';
+import { LazyCharacterPreview } from '@/features/character/LazyCharacterPreview';
 import type { CharacterConfig } from '@/features/character/schema';
 import { repo } from '@/lib/repo';
-import type { Person, Space } from '@/lib/schema';
+import type { Item, Person, Space } from '@/lib/schema';
 import { CurvedGrid, Dais } from './CurvedGrid';
 import { SpaceCard, SpaceMeta } from './SpaceCard';
 import { IdentityBlock } from './IdentityBlock';
@@ -31,10 +31,17 @@ const MOTION_STRENGTH: Record<Person['theme']['motion'], number> = {
 export function SpatialWorld({
   person,
   spaces,
+  items,
   dimmed = false,
 }: {
   person: Person;
   spaces: Space[];
+  /**
+   * The published world's items, when the creator has edited their own
+   * profile in the Studio. Omitted for a seeded creator, where the counts
+   * come from the repository instead.
+   */
+  items?: Item[];
   /** True while a Space panel is open above the world. */
   dimmed?: boolean;
 }) {
@@ -102,8 +109,15 @@ export function SpatialWorld({
         <CurvedGrid />
       </motion.div>
 
+      {/*
+        `pointer-events-none` is load-bearing, not tidying. Cards sit at a
+        negative translateZ inside this preserve-3d container, which places
+        them behind the container's own z=0 plane — so the container wins
+        every hit test and nothing inside it is clickable. Each interactive
+        child re-enables pointer events for itself.
+      */}
       <motion.div
-        className="preserve-3d absolute inset-0"
+        className="preserve-3d pointer-events-none absolute inset-0"
         style={{ rotateY, rotateX, x: shiftX }}
       >
         {/* Floor. */}
@@ -114,7 +128,7 @@ export function SpatialWorld({
             dais rather than a stretched imitation of a full-length figure. */}
         {person.portrait || person.character ? (
           <motion.div
-            className="absolute z-20"
+            className="pointer-events-none absolute z-20"
             style={{
               left: person.portrait ? `${FIGURE.l}%` : `${FIGURE.l - 1}%`,
               top: person.portrait ? `${FIGURE.t}%` : `${FIGURE.t + 14}%`,
@@ -132,7 +146,7 @@ export function SpatialWorld({
                 imgClassName="w-full h-auto [mix-blend-mode:screen]"
               />
             ) : (
-              <CharacterPreview
+              <LazyCharacterPreview
                 config={person.character as CharacterConfig}
                 alt={`${person.name}'s character`}
                 className="w-full drop-shadow-[0_30px_50px_rgba(0,0,0,0.85)]"
@@ -143,7 +157,7 @@ export function SpatialWorld({
 
         {/* Identity. */}
         <div
-          className="absolute z-30"
+          className="pointer-events-auto absolute z-30"
           style={{ left: `${IDENTITY.l}%`, top: `${IDENTITY.t}%`, width: `${IDENTITY.w}%` }}
         >
           <IdentityBlock person={person} />
@@ -153,7 +167,9 @@ export function SpatialWorld({
         {spaces.slice(0, slots.length).map((space, i) => {
           const slot = slots[i]!;
           const geo = cylinder(slot.card, 1);
-          const count = repo.listItems(space.id).length;
+          const count = items
+            ? items.filter((it) => it.spaceId === space.id).length
+            : repo.listItems(space.id).length;
 
           return (
             // A wrapper element here must not carry `preserve-3d`: that
@@ -162,7 +178,7 @@ export function SpatialWorld({
             <Fragment key={space.id}>
               {slot.meta ? (
                 <div
-                  className="absolute z-10"
+                  className="pointer-events-auto absolute z-10"
                   style={{
                     left: `${slot.meta.l}%`,
                     top: `${slot.meta.t}%`,
@@ -175,7 +191,7 @@ export function SpatialWorld({
               ) : null}
 
               <motion.div
-                className="absolute z-10"
+                className="pointer-events-auto absolute z-10"
                 initial={strength ? { opacity: 0, y: 18 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
@@ -195,7 +211,7 @@ export function SpatialWorld({
                   space={space}
                   handle={person.handle}
                   itemCount={count}
-                  overlay={space.layout === 'tile' ? 'tile' : 'caption'}
+                  overlay="caption"
                   priority={i < 4}
                   sizes="14vw"
                 />
@@ -205,14 +221,19 @@ export function SpatialWorld({
         })}
       </motion.div>
 
-      {/* Edge vignettes keep the eye in the middle of the world. */}
+      {/*
+        Edge vignettes keep the eye in the middle of the world, but the first
+        and last meta columns sit at 3.3% — an opaque wash here was covering
+        the Wardrobe and Gaming titles, which the reference keeps fully
+        legible. Narrower, and to two thirds rather than solid.
+      */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 w-[14%] bg-gradient-to-r from-void to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 w-[7%] bg-gradient-to-r from-void/70 to-transparent"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 w-[14%] bg-gradient-to-l from-void to-transparent"
+        className="pointer-events-none absolute inset-y-0 right-0 w-[7%] bg-gradient-to-l from-void/70 to-transparent"
       />
       <div
         aria-hidden="true"

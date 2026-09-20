@@ -21,6 +21,7 @@ import type { Item, Person, Space } from '@/lib/schema';
 import { Meta } from '@/seo/Meta';
 import { spaceJsonLd } from '@/seo/jsonld';
 import { NotFoundRoute } from '@/routes/NotFound';
+import { BuyLink, itemPrice } from '@/features/commerce/BuyLink';
 import { SaveButton } from '@/features/saves/SaveButton';
 import { ShareButton } from '@/features/share/ShareButton';
 
@@ -86,7 +87,7 @@ function PanelHeader({
     <div className="flex items-start justify-between gap-6">
       <div className="min-w-0">
         <SpaceNumber value={space.index} className="mb-2" />
-        <h2 className="font-display text-[clamp(26px,3vw,38px)] leading-none text-ink">
+        <h2 className="font-display text-d4 leading-none text-ink">
           {space.title}
         </h2>
         <p className="mt-3 max-w-[54ch] text-[14px] leading-relaxed text-ink-2">{space.intro}</p>
@@ -109,7 +110,15 @@ function PanelHeader({
   );
 }
 
-/** One item as it appears inside an opened Space. */
+/**
+ * One item as it appears inside an opened Space.
+ *
+ * Two separate destinations, deliberately: the tile itself opens the Item
+ * page — the context, the drawbacks, the alternatives — and the buy chip
+ * leaves for the retailer. An anchor cannot nest inside an anchor, so the
+ * card is a container with two siblings rather than one wrapping link, and
+ * the tile link is stretched over the artwork to keep the large hit area.
+ */
 function ItemTile({
   item,
   handle,
@@ -121,35 +130,49 @@ function ItemTile({
   spaceSlug: string;
   className?: string;
 }) {
+  const price = itemPrice(item);
+
   return (
-    <Link
-      to={routes.item(handle, spaceSlug, item.slug)}
-      className={cn('group/tile block w-[150px] shrink-0 focus-visible:outline-none', className)}
-    >
+    <article className={cn('group/tile relative flex w-[164px] shrink-0 flex-col', className)}>
       <div
         className={cn(
-          'relative mb-3 aspect-[3/4] overflow-hidden rounded-xl border border-line bg-panel',
+          'relative mb-3.5 aspect-[3/4] overflow-hidden rounded-xl border border-line bg-panel',
           'transition-[transform,border-color] duration-400 ease-[var(--ease-out-soft)]',
           'group-hover/tile:-translate-y-1 group-hover/tile:border-line-2',
-          'group-focus-visible/tile:ring-2 group-focus-visible/tile:ring-bronze-300',
+          'group-focus-within/tile:border-bronze-500',
         )}
       >
         <Picture
           media={item.image}
-          sizes="150px"
+          sizes="164px"
           className="h-full w-full"
           imgClassName="h-full w-full object-cover transition-transform duration-700 group-hover/tile:scale-105"
         />
       </div>
-      <p className="mb-1.5 line-clamp-2 text-[13px] font-medium leading-snug text-ink">
-        {item.title}
+
+      <h3 className="mb-1 text-[13.5px] leading-snug font-medium text-balance text-ink">
+        <Link
+          to={routes.item(handle, spaceSlug, item.slug)}
+          className="line-clamp-2 rounded-sm before:absolute before:inset-x-0 before:top-0 before:bottom-14 before:content-[''] focus-visible:ring-2 focus-visible:ring-bronze-300 focus-visible:outline-none"
+        >
+          {item.title}
+        </Link>
+      </h3>
+
+      <p className="mb-2.5 truncate text-[11.5px] text-ink-3">
+        {item.brand ?? item.retailer ?? 'Personal note'}
+        {price ? <span className="text-ink-2"> · {price}</span> : null}
       </p>
-      {item.brand ? <p className="mb-2 text-[11.5px] text-ink-3">{item.brand}</p> : null}
-      <div className="flex items-center justify-between gap-2">
+
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-0.5">
         <DisclosureChip kind={item.disclosure} compact />
-        <ArrowBadge size={26} />
+        {item.productUrl ? (
+          <BuyLink item={item} className="relative z-1 ml-auto" />
+        ) : (
+          <ArrowBadge size={26} className="ml-auto" />
+        )}
       </div>
-    </Link>
+    </article>
   );
 }
 
@@ -207,7 +230,7 @@ function DesktopPanel({
           <PanelHeader space={space} items={items} close={close} />
         </div>
 
-        <div className="no-scrollbar mt-6 flex gap-5 overflow-x-auto px-8 pb-2">
+        <div className="no-scrollbar mt-6 flex items-stretch gap-5 overflow-x-auto px-8 pb-2">
           {items.map((item) => (
             <ItemTile
               key={item.id}
@@ -260,34 +283,50 @@ function MobileSheet({
         <PanelHeader space={space} items={items} close={close} />
 
         <ul className="mt-7 space-y-3">
-          {items.map((item, i) => (
-            <li
-              key={item.id}
-              style={{ marginLeft: `${Math.min(i, 4) * 9}px` }}
-              className="transition-[margin] duration-300"
-            >
-              <Link
-                to={routes.item(person.handle, space.slug, item.slug)}
-                className="group/row flex items-center gap-3.5 rounded-2xl border border-line bg-panel/80 p-3 transition-colors hover:border-line-2 hover:bg-surface"
+          {items.map((item, i) => {
+            const price = itemPrice(item);
+            return (
+              <li
+                key={item.id}
+                style={{ marginLeft: `${Math.min(i, 4) * 9}px` }}
+                className="transition-[margin] duration-300"
               >
-                <span className="min-w-0 flex-1">
-                  <span className="mb-1 block truncate text-[14px] font-medium text-ink">
-                    {item.title}
+                {/*
+                  The row is a container rather than a link so the buy chip
+                  can sit inside it: an anchor cannot nest in an anchor. The
+                  title link is stretched over the row with a pseudo-element,
+                  which keeps the whole row tappable without swallowing the
+                  chip that sits above it on the z axis.
+                */}
+                <div className="group/row relative flex items-center gap-3.5 rounded-2xl border border-line bg-panel/80 p-3 transition-colors hover:border-line-2 hover:bg-surface focus-within:border-bronze-500">
+                  <span className="min-w-0 flex-1">
+                    <h3 className="mb-1 truncate text-[14.5px] leading-snug font-medium text-ink">
+                      <Link
+                        to={routes.item(person.handle, space.slug, item.slug)}
+                        className="rounded-sm before:absolute before:inset-0 before:content-[''] focus-visible:ring-2 focus-visible:ring-bronze-300 focus-visible:outline-none"
+                      >
+                        {item.title}
+                      </Link>
+                    </h3>
+                    <span className="mb-2 block truncate text-[12px] text-ink-3">
+                      {item.brand ?? item.retailer ?? 'Personal note'}
+                      {price ? <span className="text-ink-2"> · {price}</span> : null}
+                    </span>
+                    <span className="flex flex-wrap items-center gap-2">
+                      <DisclosureChip kind={item.disclosure} compact />
+                      <BuyLink item={item} className="relative z-1" />
+                    </span>
                   </span>
-                  {item.brand ? (
-                    <span className="mb-2 block truncate text-[12px] text-ink-3">{item.brand}</span>
-                  ) : null}
-                  <DisclosureChip kind={item.disclosure} compact />
-                </span>
-                <Picture
-                  media={item.image}
-                  sizes="72px"
-                  className="size-[68px] shrink-0 overflow-hidden rounded-xl border border-line"
-                  imgClassName="size-[68px] object-cover"
-                />
-              </Link>
-            </li>
-          ))}
+                  <Picture
+                    media={item.image}
+                    sizes="72px"
+                    className="size-[68px] shrink-0 overflow-hidden rounded-xl border border-line"
+                    imgClassName="size-[68px] object-cover"
+                  />
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         {space.note ? (

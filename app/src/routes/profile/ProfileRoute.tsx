@@ -48,11 +48,11 @@ export function ProfileRoute() {
       <ProfileShell person={person} onConnect={() => setConnectOpen(true)}>
         {isDesktop ? (
           <div className="relative">
-            <SpatialWorld person={person} spaces={spaces} dimmed={panelOpen} />
+            <SpatialWorld person={person} spaces={spaces} items={world?.items} dimmed={panelOpen} />
             <WorldFooterRail person={person} />
           </div>
         ) : (
-          <MobileWorld person={person} spaces={spaces} />
+          <MobileWorld person={person} spaces={spaces} items={world?.items} />
         )}
 
         {/* The opened Space renders above the world. */}

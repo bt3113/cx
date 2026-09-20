@@ -35,6 +35,9 @@ export default defineConfig({
           if (id.includes('react-router')) return 'router';
           if (id.includes('/motion') || id.includes('framer-motion')) return 'motion';
           if (id.includes('@dnd-kit')) return 'dnd';
+          // ~2MB of avatar styles. Its own chunk, so a bundler decision
+          // can never fold it back into the entry.
+          if (id.includes('@dicebear')) return 'character';
           if (id.includes('react')) return 'react';
           return 'vendor';
         },

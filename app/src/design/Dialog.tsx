@@ -95,7 +95,7 @@ export function Dialog({
               <h2
                 id="dlg-title"
                 className={cn(
-                  'font-display text-[24px] leading-tight',
+                  'font-display text-d6 leading-tight',
                   hideTitle && 'sr-only',
                 )}
               >

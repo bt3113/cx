@@ -21,7 +21,7 @@ function PageHero({ kicker, title, lede }: { kicker: string; title: string; lede
   return (
     <Section className="pb-12 pt-16 sm:pt-20">
       <p className="kicker mb-5">{kicker}</p>
-      <h1 className="font-display mb-5 max-w-[20ch] text-[clamp(34px,5.6vw,66px)] leading-[1.0] tracking-[-0.02em]">
+      <h1 className="font-display mb-5 max-w-[20ch] text-d2 leading-[1.04] tracking-[0]">
         {title}
       </h1>
       <p className="max-w-[58ch] text-[clamp(16px,1.7vw,19px)] leading-relaxed text-ink-2">{lede}</p>
@@ -42,7 +42,7 @@ function Feature({ n, title, body }: { n: string; title: string; body: string })
 function CTA({ title, body }: { title: string; body: string }) {
   return (
     <Section className="border-t border-line py-20 text-center sm:py-24">
-      <h2 className="font-display mx-auto mb-4 max-w-[20ch] text-[clamp(28px,4.2vw,48px)] leading-[1.04]">{title}</h2>
+      <h2 className="font-display mx-auto mb-4 max-w-[20ch] text-d3 leading-[1.04]">{title}</h2>
       <p className="mx-auto mb-8 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-2">{body}</p>
       <div className="flex flex-wrap justify-center gap-3">
         <ButtonLink to={routes.signUp()} variant="primary" size="lg">Claim your Zat</ButtonLink>
@@ -74,7 +74,7 @@ export function ProductRoute() {
 
       {alex ? (
         <Section className="border-t border-line py-16">
-          <h2 className="font-display mb-3 text-[clamp(24px,3.2vw,38px)]">Six Spaces from one world</h2>
+          <h2 className="font-display mb-3 text-d4">Six Spaces from one world</h2>
           <p className="mb-9 max-w-[54ch] text-[15px] leading-relaxed text-ink-2">Open any of them — they are real pages, not screenshots.</p>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {spaces.map((space) => (
@@ -121,7 +121,7 @@ export function ForCreatorsRoute() {
       </Section>
 
       <Section className="border-t border-line py-16">
-        <h2 className="font-display mb-8 text-[clamp(24px,3.2vw,38px)]">What it takes to start</h2>
+        <h2 className="font-display mb-8 text-d4">What it takes to start</h2>
         <ol className="grid gap-4 sm:grid-cols-3">
           {[
             ['About ten minutes', 'Claim a handle, write one line about yourself, build a character.'],
@@ -155,7 +155,7 @@ export function TrustRoute() {
         lede="Anyone can post a product. What makes a recommendation useful is everything around it: how they got it, how long they have had it, how often they reach for it, and what they would tell you not to like about it." />
 
       <Section className="pb-16">
-        <h2 className="font-display mb-3 text-[clamp(22px,2.8vw,32px)]">Five relationships, always declared</h2>
+        <h2 className="font-display mb-3 text-d5">Five relationships, always declared</h2>
         <p className="mb-8 max-w-[56ch] text-[15px] leading-relaxed text-ink-2">
           Zat will not store an Item without one. It appears beside the Item, inside the Space, on the
           creator's About page, and on any Story image shared from it.
@@ -172,7 +172,7 @@ export function TrustRoute() {
 
       {item && space ? (
         <Section className="border-t border-line py-16">
-          <h2 className="font-display mb-3 text-[clamp(22px,2.8vw,32px)]">A sponsored item, handled honestly</h2>
+          <h2 className="font-display mb-3 text-d5">A sponsored item, handled honestly</h2>
           <p className="mb-8 max-w-[56ch] text-[15px] leading-relaxed text-ink-2">
             Zat does not hide commercial relationships — it makes them legible, so a reader can weigh
             the opinion properly instead of guessing.
@@ -182,7 +182,7 @@ export function TrustRoute() {
               <DisclosureChip kind={item.disclosure} />
               <span className="text-[12.5px] text-ink-3">Used since {item.usedSince}</span>
             </div>
-            <h3 className="font-display mb-3 text-[24px]">{item.title}</h3>
+            <h3 className="font-display mb-3 text-d6">{item.title}</h3>
             <p className="mb-6 max-w-[58ch] text-[14.5px] leading-relaxed text-ink-2">{item.creatorNote}</p>
             <dl className="grid grid-cols-2 gap-5 border-t border-line pt-6 sm:grid-cols-4">
               <Stat label="Would buy again" value={item.wouldBuyAgain ? 'Yes' : 'No'} />
@@ -228,7 +228,7 @@ export function SharingRoute() {
       </Section>
 
       <Section className="border-t border-line py-16">
-        <h2 className="font-display mb-3 text-[clamp(22px,2.8vw,32px)]">Try it on a real world</h2>
+        <h2 className="font-display mb-3 text-d5">Try it on a real world</h2>
         <p className="mb-8 max-w-[54ch] text-[15px] leading-relaxed text-ink-2">
           Open any Space or Item and press Share — the preview you see is the actual generated file.
         </p>
@@ -312,7 +312,7 @@ export function DiscoverExplainedRoute() {
         lede="Once enough worlds exist, the interesting question is not what ranks. It is what the people you respect genuinely reach for — and Zat's structure already holds that answer." />
 
       <Section className="pb-16">
-        <h2 className="font-display mb-6 text-[clamp(22px,2.8vw,32px)]">The kind of question this can answer</h2>
+        <h2 className="font-display mb-6 text-d5">The kind of question this can answer</h2>
         <ul className="mb-10 grid gap-2.5 sm:grid-cols-2">
           {['cameras actually used by travel creators', 'chairs used by designers', 'running shoes used by marathon creators', 'books most saved from founder Zats'].map((q) => (
             <li key={q} className="rounded-2xl border border-line px-5 py-4 text-[14.5px] text-ink-2">“{q}”</li>
@@ -369,9 +369,9 @@ export function PricingRoute() {
               <div className={cn('flex h-full flex-col rounded-[var(--radius-panel)] border p-7',
                 plan.featured ? 'border-bronze-500/45 bg-bronze-500/5' : 'border-line')}>
                 {plan.featured ? <p className="kicker mb-4 text-bronze-200">Most chosen</p> : <p className="kicker mb-4">Plan</p>}
-                <h2 className="font-display mb-2 text-[26px] leading-none">{plan.name}</h2>
+                <h2 className="font-display mb-2 text-d6 leading-none">{plan.name}</h2>
                 <p className="mb-5 flex items-baseline gap-2">
-                  <span className="font-display text-[40px] leading-none">{plan.price}</span>
+                  <span className="font-display text-d4 leading-none">{plan.price}</span>
                   <span className="text-[13px] text-ink-3">{plan.cadence}</span>
                 </p>
                 <p className="mb-7 text-[13.5px] leading-relaxed text-ink-3">{plan.lede}</p>
@@ -404,7 +404,7 @@ export function PricingRoute() {
       </Section>
 
       <Section className="border-t border-line py-16">
-        <h2 className="font-display mb-8 text-[clamp(22px,2.8vw,32px)]">Questions people ask first</h2>
+        <h2 className="font-display mb-8 text-d5">Questions people ask first</h2>
         <dl className="grid gap-x-10 gap-y-7 md:grid-cols-2">
           {[
             ['Is the free plan a trial?', 'No. It does not expire and it is not feature-crippled to the point of being useless. Three Spaces is a genuine world.'],

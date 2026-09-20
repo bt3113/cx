@@ -12,7 +12,7 @@
     "assets": "tsx scripts/assets/extract/index.ts",
     "fonts": "tsx scripts/fetch-fonts.ts",
     "typecheck": "tsc --noEmit",
-    "build": "tsc --noEmit && vite build && tsx scripts/postbuild.ts",
+    "build": "tsc --noEmit && tsx scripts/clean-assets.ts && vite build && tsx scripts/postbuild.ts",
     "preview": "vite preview",
     "serve:dist": "tsx scripts/serve-dist.ts",
     "test": "vitest run",

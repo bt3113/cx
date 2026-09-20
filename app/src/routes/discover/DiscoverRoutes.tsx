@@ -117,7 +117,7 @@ export function DiscoverRoute() {
 
       <Section width="wide" className="pb-10 pt-16">
         <p className="kicker mb-5">Discover</p>
-        <h1 className="font-display mb-5 max-w-[18ch] text-[clamp(32px,5vw,58px)] leading-[1.02]">
+        <h1 className="font-display mb-5 max-w-[18ch] text-d2 leading-[1.02]">
           What people actually use.
         </h1>
         <p className="mb-9 max-w-[56ch] text-[16px] leading-relaxed text-ink-2">
@@ -247,7 +247,7 @@ export function SavedRoute() {
       <Meta title="Saved — Zat" description="Items you have saved." path={routes.saved()} noIndex />
       <Section width="wide" className="pb-20 pt-16">
         <p className="kicker mb-5">Saved</p>
-        <h1 className="font-display mb-5 text-[clamp(30px,4.6vw,52px)] leading-[1.03]">Your collections</h1>
+        <h1 className="font-display mb-5 text-d2 leading-[1.03]">Your collections</h1>
         <p className="mb-9 max-w-[54ch] text-[15.5px] leading-relaxed text-ink-2">
           Saved items live in this browser. Zat has no visitor accounts yet, so nothing here is sent
           anywhere or follows you to another device.
@@ -337,7 +337,7 @@ export function PublicMediaKitRoute() {
           <Picture media={person.avatar} priority sizes="88px" className="size-20 overflow-hidden rounded-full border border-line" imgClassName="size-20 object-cover" />
           <div className="min-w-0">
             <p className="kicker mb-2">Media kit</p>
-            <h1 className="font-display text-[clamp(28px,4vw,46px)] leading-tight">{person.name}</h1>
+            <h1 className="font-display text-d3 leading-tight">{person.name}</h1>
             <p className="mt-1.5 text-[13.5px] text-ink-3">@{person.handle} · {person.location} · {person.roles.join(' · ')}</p>
           </div>
         </div>

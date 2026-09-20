@@ -849,7 +849,7 @@ export function StudioMediaKit() {
 
       <StudioCard className="space-y-8">
         <div>
-          <h2 className="font-display mb-1.5 text-[28px] leading-tight">{world.person.name || handle}</h2>
+          <h2 className="font-display mb-1.5 text-d5 leading-tight">{world.person.name || handle}</h2>
           <p className="text-[13.5px] text-ink-3">@{handle} · {world.person.location} · {world.person.roles.join(' · ')}</p>
           <p className="mt-4 max-w-[60ch] text-[14.5px] leading-relaxed text-ink-2">{world.person.statement}</p>
         </div>
@@ -857,10 +857,10 @@ export function StudioMediaKit() {
         <Divider />
 
         <dl className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-          <div><dt className="kicker mb-2">90-day views</dt><dd className="font-display text-[26px] leading-none">{formatNumber(t.views)}</dd></div>
-          <div><dt className="kicker mb-2">Space opens</dt><dd className="font-display text-[26px] leading-none">{formatNumber(t.opens)}</dd></div>
-          <div><dt className="kicker mb-2">Outbound clicks</dt><dd className="font-display text-[26px] leading-none">{formatNumber(t.outbound)}</dd></div>
-          <div><dt className="kicker mb-2">Saves</dt><dd className="font-display text-[26px] leading-none">{formatNumber(t.saves)}</dd></div>
+          <div><dt className="kicker mb-2">90-day views</dt><dd className="font-display text-d6 leading-none">{formatNumber(t.views)}</dd></div>
+          <div><dt className="kicker mb-2">Space opens</dt><dd className="font-display text-d6 leading-none">{formatNumber(t.opens)}</dd></div>
+          <div><dt className="kicker mb-2">Outbound clicks</dt><dd className="font-display text-d6 leading-none">{formatNumber(t.outbound)}</dd></div>
+          <div><dt className="kicker mb-2">Saves</dt><dd className="font-display text-d6 leading-none">{formatNumber(t.saves)}</dd></div>
         </dl>
 
         <Divider />
@@ -932,7 +932,7 @@ export function StudioSettings() {
 
         <StudioCard className="space-y-4">
           <p className="kicker">Plan</p>
-          <p className="font-display text-[26px] capitalize leading-none">{world.person.plan}</p>
+          <p className="font-display text-d6 capitalize leading-none">{world.person.plan}</p>
           <p className="text-[13.5px] leading-relaxed text-ink-3">
             Billing needs a payment provider, which this build does not have connected. Plans are
             shown for demonstration.

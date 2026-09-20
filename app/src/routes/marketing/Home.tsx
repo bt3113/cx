@@ -70,17 +70,17 @@ export function HomeRoute() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.06 }}
-                className="font-display mb-6 text-[clamp(40px,6.4vw,78px)] leading-[0.98] tracking-[-0.025em]"
+                className="font-display mb-6 text-d1 leading-[1.02] tracking-[0]"
               >
-                Everything that makes you, you
-                <span className="block text-ink-2">— in one place.</span>
+                Everything that makes you, you&nbsp;&mdash;
+                <span className="block text-ink-2">in one place.</span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.12 }}
-                className="mb-9 max-w-[52ch] text-[clamp(16px,1.6vw,19px)] leading-relaxed text-ink-2"
+                className="lede mb-9"
               >
                 Zat is a personal world you own. Your identity, your taste, the tools you actually
                 use and the things you genuinely recommend — with enough context that a stranger
@@ -127,7 +127,7 @@ export function HomeRoute() {
                       imgClassName="size-12 object-cover"
                     />
                     <div className="min-w-0">
-                      <p className="font-display text-[19px] leading-tight">{alex.name}</p>
+                      <p className="font-display text-d6 leading-tight">{alex.name}</p>
                       <p className="text-[12.5px] text-ink-3">
                         @{alex.handle} · {alex.roles.join(' · ')}
                       </p>
@@ -222,7 +222,7 @@ export function HomeRoute() {
       <Section className="border-t border-line py-16 sm:py-24">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
-            <h2 className="font-display mb-4 text-[clamp(28px,3.6vw,44px)] leading-[1.05]">
+            <h2 className="font-display mb-4 text-d3 leading-[1.05]">
               Other profiles show a slice. Zat shows the person.
             </h2>
             <p className="max-w-[44ch] text-[15.5px] leading-relaxed text-ink-2">
@@ -254,7 +254,7 @@ export function HomeRoute() {
         <Section className="border-t border-line py-16 sm:py-24">
           <div className="mb-10 max-w-[62ch]">
             <p className="kicker mb-4">The trust layer</p>
-            <h2 className="font-display mb-4 text-[clamp(28px,3.6vw,44px)] leading-[1.05]">
+            <h2 className="font-display mb-4 text-d3 leading-[1.05]">
               A recommendation is worth nothing without its context.
             </h2>
             <p className="text-[15.5px] leading-relaxed text-ink-2">
@@ -283,7 +283,7 @@ export function HomeRoute() {
                   </span>
                 </div>
 
-                <h3 className="font-display mb-3 text-[26px] leading-tight">{trustItem.title}</h3>
+                <h3 className="font-display mb-3 text-d6 leading-tight">{trustItem.title}</h3>
                 <p className="mb-6 max-w-[56ch] text-[14.5px] leading-relaxed text-ink-2">
                   {trustItem.creatorNote}
                 </p>
@@ -381,7 +381,7 @@ export function HomeRoute() {
         <div className="mb-9 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="kicker mb-4">Worlds on Zat</p>
-            <h2 className="font-display text-[clamp(26px,3.2vw,38px)] leading-[1.05]">
+            <h2 className="font-display text-d4 leading-[1.05]">
               Four people, four very different worlds.
             </h2>
           </div>
@@ -450,7 +450,7 @@ export function HomeRoute() {
       {/* --- close ------------------------------------------------------ */}
       <Section className="border-t border-line py-20 text-center sm:py-28">
         <Sparkles className="mx-auto mb-6 size-5 text-bronze-300" strokeWidth={1.5} />
-        <h2 className="font-display mx-auto mb-5 max-w-[18ch] text-[clamp(30px,4.6vw,56px)] leading-[1.02]">
+        <h2 className="font-display mx-auto mb-5 max-w-[18ch] text-d2 leading-[1.02]">
           One link. Your entire world.
         </h2>
         <p className="mx-auto mb-9 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-2">

@@ -187,7 +187,7 @@ export function MetricTile({
   return (
     <div className="min-w-0 rounded-2xl border border-line bg-surface p-4">
       <p className="kicker mb-2.5">{label}</p>
-      <p className="font-display mb-1 text-[clamp(22px,2.4vw,30px)] leading-none tabular-nums">
+      <p className="font-display mb-1 text-d5 leading-none tabular-nums">
         {value}
       </p>
       {delta !== undefined ? (

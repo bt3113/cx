@@ -179,7 +179,7 @@ export function OnboardingRoute() {
               <StepShell title="Your address on the internet" lede="This is the link you will send. It does not change, so pick something you will still like in three years.">
                 <div className="rounded-[var(--radius-panel)] border border-line bg-surface p-6">
                   <p className="kicker mb-3">Your Zat</p>
-                  <p className="font-display break-all text-[clamp(22px,3.6vw,34px)] leading-tight">
+                  <p className="font-display break-all text-d4 leading-tight">
                     zat.com/<span className="text-bronze-200">{handle}</span>
                   </p>
                   <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
@@ -289,12 +289,12 @@ export function OnboardingRoute() {
                     <CharacterPreview config={character} alt={`${draft.person.name}'s character`} className="w-full rounded-[var(--radius-panel)] border border-line bg-surface" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-display mb-2 text-[clamp(24px,3.4vw,38px)] leading-tight">{draft.person.name || 'Unnamed'}</h3>
+                    <h3 className="font-display mb-2 text-d4 leading-tight">{draft.person.name || 'Unnamed'}</h3>
                     <p className="mb-1 text-[13px] text-ink-3">@{handle} · {draft.person.roles.join(' · ') || 'No roles yet'}</p>
                     <p className="mb-6 max-w-[52ch] text-[14.5px] leading-relaxed text-ink-2">{draft.person.statement || 'No statement yet.'}</p>
                     <dl className="flex flex-wrap gap-8">
-                      <div><dt className="kicker mb-1.5">Spaces</dt><dd className="font-display text-[26px] leading-none">{spaces.length}</dd></div>
-                      <div><dt className="kicker mb-1.5">Items</dt><dd className="font-display text-[26px] leading-none">{items.length}</dd></div>
+                      <div><dt className="kicker mb-1.5">Spaces</dt><dd className="font-display text-d6 leading-none">{spaces.length}</dd></div>
+                      <div><dt className="kicker mb-1.5">Items</dt><dd className="font-display text-d6 leading-none">{items.length}</dd></div>
                     </dl>
                   </div>
                 </div>
@@ -305,7 +305,7 @@ export function OnboardingRoute() {
               <StepShell title="Publish your Zat" lede="Your world goes live at your handle. You can unpublish at any time from the Studio.">
                 <div className="max-w-[520px] rounded-[var(--radius-panel)] border border-line bg-surface p-6">
                   <p className="kicker mb-3">Your link</p>
-                  <p className="font-display mb-6 break-all text-[22px]">zat.com/{handle}</p>
+                  <p className="font-display mb-6 break-all text-d6">zat.com/{handle}</p>
                   <Button variant="primary" size="lg" className="w-full"
                     onClick={() => { publish(handle); navigate(routes.profile(handle)); }}>
                     <Sparkles className="size-4" strokeWidth={1.8} />
@@ -348,7 +348,7 @@ function StepShell({ title, lede, children, onEnter }: { title: string; lede: st
   }, []);
   return (
     <div>
-      <h2 className="font-display mb-3 text-[clamp(26px,4vw,44px)] leading-[1.05]">{title}</h2>
+      <h2 className="font-display mb-3 text-d3 leading-[1.05]">{title}</h2>
       <p className="mb-9 max-w-[58ch] text-[15px] leading-relaxed text-ink-2">{lede}</p>
       {children}
     </div>
