@@ -23,12 +23,21 @@ export const RESERVED_SLUGS = new Set([
 ]);
 
 const Home = lazy(() => import('@/routes/marketing/Home').then((m) => ({ default: m.HomeRoute })));
+const CharacterStudio = lazy(() =>
+  import('@/features/character/CharacterRoute').then((m) => ({ default: m.CharacterRoute })),
+);
 
 export const appRoutes: RouteObject[] = [
   {
     element: <RootLayout />,
     children: [
       { path: '/', element: <Home /> },
+
+      // --- creator tools ----------------------------------------------
+      // `/studio` currently enters the zero-budget Character Creator. The
+      // explicit child URL is kept so future Studio sections can coexist.
+      { path: 'studio', element: <CharacterStudio /> },
+      { path: 'studio/character', element: <CharacterStudio /> },
 
       // --- a creator's world ------------------------------------------
       {

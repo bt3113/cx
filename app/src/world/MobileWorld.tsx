@@ -5,21 +5,16 @@
  * editorial and more intimate: the figure and identity own the first screen
  * with a few Spaces orbiting them, and exploration then becomes a considered
  * vertical sequence rather than a grid.
- *
- * Card count in the opening screen is lower than the reference's because that
- * render is ~940px wide; at 390px the same count would leave each card
- * illegible.
  */
 import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '@/design/cn';
-import { Picture } from '@/lib/media';
 import { repo } from '@/lib/repo';
 import type { Person, Space } from '@/lib/schema';
+import { ProfileCharacter } from '@/features/character/ProfileCharacter';
 import { CurvedGrid, Dais } from './CurvedGrid';
 import { IdentityBlock } from './IdentityBlock';
 import { SpaceCard } from './SpaceCard';
 
-/** Opening-screen orbit positions, mirroring the vertical reference. */
 const ORBIT = [
   { l: -2, t: 8, w: 40, rot: 11 },
   { l: 62, t: 14, w: 40, rot: -11 },
@@ -36,7 +31,6 @@ export function MobileWorld({ person, spaces }: { person: Person; spaces: Space[
 
   return (
     <div>
-      {/* --- opening screen ------------------------------------------- */}
       <section
         className="relative isolate overflow-hidden pb-10"
         style={{ minHeight: 'min(104dvh, 860px)' }}
@@ -48,34 +42,19 @@ export function MobileWorld({ person, spaces }: { person: Person; spaces: Space[
 
         <Dais className="bottom-[8%] left-1/2 w-[130%] -translate-x-1/2" />
 
-        {/* Identity sits above the figure so the name is never obscured. */}
         <div className="relative z-30 px-6 pt-10 text-center">
-          <IdentityBlock
-            person={person}
-            size="lg"
-            showRoles
-            className="mx-auto inline-block text-left"
-          />
+          <IdentityBlock person={person} size="lg" showRoles className="mx-auto inline-block text-left" />
         </div>
 
-        {person.portrait ? (
-          <motion.div
-            initial={animate ? { opacity: 0, y: 24 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-x-0 bottom-[6%] z-20 mx-auto w-[58%] max-w-[290px]"
-          >
-            <Picture
-              media={person.portrait}
-              priority
-              sizes="58vw"
-              className="block w-full"
-              imgClassName="w-full h-auto [mix-blend-mode:screen]"
-            />
-          </motion.div>
-        ) : null}
+        <motion.div
+          initial={animate ? { opacity: 0, y: 24 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-x-0 bottom-[5%] z-20 mx-auto h-[58%] w-[62%] max-w-[310px]"
+        >
+          <ProfileCharacter person={person} sizes="62vw" className="h-full w-full" />
+        </motion.div>
 
-        {/* Orbiting Spaces. */}
         <div className="absolute inset-0 z-10" style={{ perspective: '900px' }}>
           {orbiting.map((space, i) => {
             const slot = ORBIT[i]!;
@@ -112,20 +91,12 @@ export function MobileWorld({ person, spaces }: { person: Person; spaces: Space[
         </p>
       </section>
 
-      {/* --- the rest of the world ------------------------------------ */}
       {rest.length ? (
         <section className="px-5 pb-8" aria-label="More Spaces">
           <h2 className="kicker mb-5">The rest of the world</h2>
           <ul className="space-y-6">
             {rest.map((space, i) => (
-              <li
-                key={space.id}
-                className={cn(
-                  // Staggered rather than a plain stack — the vertical
-                  // reference offsets alternating cards.
-                  i % 2 === 0 ? 'mr-8' : 'ml-8',
-                )}
-              >
+              <li key={space.id} className={cn(i % 2 === 0 ? 'mr-8' : 'ml-8')}>
                 <SpaceCard
                   space={space}
                   handle={person.handle}
@@ -134,9 +105,7 @@ export function MobileWorld({ person, spaces }: { person: Person; spaces: Space[
                   ratio="4 / 3"
                   sizes="86vw"
                 />
-                <p className="mt-2.5 text-[11px] text-ink-3">
-                  {repo.listItems(space.id).length} items
-                </p>
+                <p className="mt-2.5 text-[11px] text-ink-3">{repo.listItems(space.id).length} items</p>
               </li>
             ))}
           </ul>

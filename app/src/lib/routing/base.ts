@@ -68,6 +68,7 @@ export const routes = {
   studioItem: (id: string) => `/studio/items/${id}`,
   studioContent: () => '/studio/content',
   studioAppearance: () => '/studio/appearance',
+  studioCharacter: () => '/studio/character',
   studioStory: () => '/studio/story',
   studioAnalytics: () => '/studio/analytics',
   studioMediaKit: () => '/studio/media-kit',
