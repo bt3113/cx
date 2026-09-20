@@ -13,52 +13,29 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '@/design/cn';
 import { useMediaQuery } from '@/lib/hooks';
-import { Picture } from '@/lib/media';
-import { LazyCharacterPreview } from '@/features/character/LazyCharacterPreview';
-import type { CharacterConfig } from '@/features/character/schema';
+import { ProfilePortrait } from '@/features/identity/ProfilePortrait';
 import { repo } from '@/lib/repo';
 import type { Item, Person, Space } from '@/lib/schema';
-import { CurvedGrid, Dais } from './CurvedGrid';
+import { CurvedGrid } from './CurvedGrid';
 import { IdentityBlock } from './IdentityBlock';
 import { SpaceCard } from './SpaceCard';
 
 /**
- * Opening-screen card positions, following the vertical reference.
+ * The vertical composition, on the same grid discipline as the desktop
+ * world: two columns of Spaces flanking a centre that holds the creator.
  *
- * The reference runs two columns of cards down either side of the figure,
- * with the identity stacked between them at the top. It is drawn on a tablet
- * canvas, where each column is 22% wide and carries four cards; a phone has
- * neither the width for a 22% card to stay legible nor the height for eight
- * of them, so the same grammar is kept with wider columns and two cards a
- * side. The remaining Spaces continue in the list below the fold.
+ * The earlier version placed each card at a hand-authored percentage and
+ * drifted for the same reason the desktop wall did. Here the cards are grid
+ * cells, the centre column spans every row, and nothing can land out of
+ * line. Four Spaces a side on a tablet, two on a phone; the rest continue
+ * in the list below the fold.
  */
+/** Rotation per flanking column, so the pair reads as a shallow curve. */
 /**
- * The vertical reference itself, measured off a 941x1672 canvas: two columns
- * of four flanking the figure, the left column starting slightly higher than
- * the right. Used from 640px up, where a 22%-wide card is still legible.
+ * Kept shallow. A rotated card projects wider than its grid track, so a
+ * steep tilt pushes it past the padding and off the edge of the screen.
  */
-const ORBIT_WIDE = [
-  { l: 4.3, t: 10.8, w: 22, rot: 9 },
-  { l: 73.3, t: 13.9, w: 22, rot: -9 },
-  { l: 4.3, t: 28.4, w: 22, rot: 8 },
-  { l: 73.3, t: 28.7, w: 22, rot: -8 },
-  { l: 4.3, t: 43.7, w: 22, rot: 7 },
-  { l: 73.3, t: 45.2, w: 22, rot: -7 },
-  { l: 4.3, t: 60.2, w: 22, rot: 6 },
-  { l: 73.3, t: 62.4, w: 22, rot: -6 },
-] as const;
-
-/**
- * A phone has neither the width for a 22% card to stay legible nor the
- * height for eight of them, so the same two-column grammar runs with wider
- * columns and two cards a side. The rest continue in the list below.
- */
-const ORBIT_NARROW = [
-  { l: 1, t: 40, w: 36, rot: 9 },
-  { l: 63, t: 45, w: 36, rot: -9 },
-  { l: 1, t: 61, w: 36, rot: 7 },
-  { l: 63, t: 66, w: 36, rot: -7 },
-] as const;
+const TILT = 5;
 
 export function MobileWorld({
   person,
@@ -79,134 +56,134 @@ export function MobileWorld({
   // The vertical reference is drawn on a tablet canvas. Below 640px the same
   // composition runs with two cards a side instead of four.
   const wide = useMediaQuery('(min-width: 640px)');
-  const orbit = wide ? ORBIT_WIDE : ORBIT_NARROW;
+  // Four Spaces a side on a tablet, two on a phone — a phone has neither
+  // the width for a legible card at a third of the screen nor the height
+  // for eight of them.
+  const flanking = wide ? 8 : 4;
+  const rowCount = flanking / 2;
 
-  const orbiting = spaces.slice(0, orbit.length);
-  const rest = spaces.slice(orbit.length);
+  const orbiting = spaces.slice(0, flanking);
+  const rest = spaces.slice(flanking);
 
   return (
     <div>
       {/* --- opening screen ------------------------------------------- */}
       <section
         className="relative isolate overflow-hidden pb-10"
-        // Capped on a phone so the opening screen cannot grow taller than a
-        // hand can hold; a tablet gets the full viewport the reference uses.
-        style={{ minHeight: wide ? '100dvh' : 'min(100dvh, 820px)' }}
+        style={{ minHeight: wide ? '100dvh' : 'auto' }}
         aria-label={`${person.name}'s world`}
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-[-10%]">
           <CurvedGrid />
         </div>
 
-        <Dais
-          className={cn(
-            'left-1/2 w-[130%] -translate-x-1/2',
-            wide ? 'bottom-[18%]' : 'bottom-[8%]',
-          )}
-        />
-
-        {/*
-          Identity owns the top band; the figure occupies the lower half, so
-          the name is never sitting on top of a face.
-
-          `pointer-events-none` on the wrapper is load-bearing. This block is
-          in normal flow, so its box spans the full width and runs well past
-          the text — over the absolutely positioned orbit beneath it, which
-          made the first two Space cards untappable. The block re-enables
-          pointer events for its own content.
-        */}
-        <div
-          className={cn(
-            'pointer-events-none z-30 px-6',
-            wide ? 'absolute left-[30.5%] top-[8%] w-[42%]' : 'relative pt-16',
-          )}
-        >
-          <IdentityBlock
-            person={person}
-            size="lg"
-            showRoles
-            className={cn(
-              'pointer-events-auto block text-left',
-              wide ? 'max-w-none' : 'mx-auto max-w-[16rem]',
-            )}
-          />
-        </div>
-
-        {person.portrait || person.character ? (
-          <motion.div
-            initial={animate ? { opacity: 0, y: 24 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none absolute left-1/2 z-20 flex -translate-x-1/2 justify-center',
-              wide ? 'bottom-[17%] h-[54%] max-h-[660px]' : 'bottom-[7%] h-[52%] max-h-[440px]',
-            )}
+        {wide ? (
+          /*
+            Tablet: the reference's own composition — two columns of Spaces
+            flanking the creator, on grid tracks so nothing can drift.
+          */
+          <div
+            /*
+              No `h-full`/`content-center` here. A percentage height resolves
+              to auto when the parent only has a min-height, so `h-full` was
+              collapsing to the content height and `content-center` did
+              nothing — which is why the first row was sitting under the
+              header. Natural flow with real padding is predictable.
+            */
+            className="grid w-full gap-x-[6%] gap-y-[3.5%] px-8 pt-32 pb-28"
+            style={{ gridTemplateColumns: '1fr 1.15fr 1fr', perspective: '1300px' }}
           >
-            {person.portrait ? (
-              <Picture
-                media={person.portrait}
-                priority
-                sizes="40vw"
-                className="block h-full"
-                imgClassName="h-full w-auto [mix-blend-mode:screen]"
+            <div
+              className="flex flex-col items-center self-center px-1 text-center"
+              style={{ gridColumn: 2, gridRow: `1 / span ${rowCount}` }}
+            >
+              <ProfilePortrait person={person} priority className="w-[80%] max-w-[230px]" />
+              <IdentityBlock
+                person={person}
+                size="lg"
+                layout="inline"
+                className="mt-6 w-full [&>ul]:justify-center"
               />
-            ) : (
-              <LazyCharacterPreview
-                config={person.character as CharacterConfig}
-                alt={`${person.name}'s character`}
-                className="h-full w-auto drop-shadow-[0_24px_40px_rgba(0,0,0,0.85)]"
+            </div>
+
+            {orbiting.map((space, i) => {
+              const left = i % 2 === 0;
+              return (
+                <motion.div
+                  key={space.id}
+                  className="self-center"
+                  style={{
+                    gridColumn: left ? 1 : 3,
+                    gridRow: Math.floor(i / 2) + 1,
+                    rotateY: left ? TILT : -TILT,
+                  }}
+                  initial={animate ? { opacity: 0, y: 18 } : false}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <SpaceCard
+                    space={space}
+                    handle={person.handle}
+                    itemCount={countFor(space.id)}
+                    overlay="full"
+                    ratio="4 / 3"
+                    priority={i < 2}
+                    sizes="30vw"
+                  />
+                </motion.div>
+              );
+            })}
+          </div>
+        ) : (
+          /*
+            Phone: stacked, not the desktop composition squeezed.
+
+            Three columns across 390px gives the creator's name about 120px,
+            which wraps "Alex Den" onto two lines, and gives a card about
+            115px, which breaks "Wardrobe" mid-word. A phone reads top to
+            bottom, so the creator comes first at full width and the Spaces
+            follow in an even two-column grid.
+          */
+          <div className="relative px-5 pt-16 pb-6">
+            <div className="flex flex-col items-center text-center">
+              <ProfilePortrait person={person} priority className="w-[62%] max-w-[240px]" />
+              <IdentityBlock
+                person={person}
+                size="lg"
+                layout="inline"
+                className="mt-6 w-full [&>ul]:justify-center"
               />
-            )}
-          </motion.div>
+            </div>
+
+            <ul className="mt-10 grid grid-cols-2 gap-3.5">
+              {orbiting.map((space, i) => (
+                <motion.li
+                  key={space.id}
+                  initial={animate ? { opacity: 0, y: 16 } : false}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <SpaceCard
+                    space={space}
+                    handle={person.handle}
+                    itemCount={countFor(space.id)}
+                    overlay="title"
+                    ratio="4 / 3"
+                    priority={i < 2}
+                    sizes="44vw"
+                  />
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {wide ? (
+          <p className="pointer-events-none absolute bottom-5 left-5 z-30 flex items-center gap-2.5 text-[10px] tracking-[0.22em] text-ink-3 uppercase">
+            <span aria-hidden="true" className="inline-block h-3 w-px bg-bronze-400" />
+            Scroll to explore
+          </p>
         ) : null}
-
-        {/* Orbiting Spaces. */}
-        <div className="pointer-events-none absolute inset-0 z-10" style={{ perspective: '900px' }}>
-          {orbiting.map((space, i) => {
-            const slot = orbit[i]!;
-            return (
-              <motion.div
-                key={space.id}
-                initial={animate ? { opacity: 0, y: 20 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.65, delay: 0.12 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
-                className="pointer-events-auto absolute"
-                style={{
-                  left: `${slot.l}%`,
-                  top: `${slot.t}%`,
-                  width: `${slot.w}%`,
-                  transform: `rotateY(${slot.rot}deg)`,
-                }}
-              >
-                <SpaceCard
-                  space={space}
-                  handle={person.handle}
-                  itemCount={countFor(space.id)}
-                  // The reference's tablet cards carry the descriptor as
-                  // well as the title; a phone card has no room for it.
-                  overlay={wide ? 'full' : 'title'}
-                  ratio="4 / 3"
-                  priority={i < 2}
-                  sizes="38vw"
-                />
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Bottom left, below the dais, exactly where the reference puts it. */}
-        <p
-          className={cn(
-            'pointer-events-none absolute left-6 z-30 hidden items-center gap-2.5 text-[10px] tracking-[0.22em] uppercase text-ink-3',
-            // Below 420px the floating navigation reaches this corner, so the
-            // hint is dropped rather than stacked underneath it.
-            wide ? 'bottom-[13%] flex' : 'bottom-[104px] min-[420px]:flex',
-          )}
-        >
-          <span aria-hidden="true" className="inline-block h-3 w-px bg-bronze-400" />
-          Scroll to explore
-        </p>
       </section>
 
       {/* --- the rest of the world ------------------------------------ */}

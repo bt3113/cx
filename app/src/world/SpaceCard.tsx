@@ -125,7 +125,7 @@ export function SpaceCard({
               the clamp simply cuts the last letters off.
             */}
             {overlay === 'full' || overlay === 'title' ? (
-              <h3 className="mb-1 line-clamp-2 text-[13px] leading-tight font-medium break-words text-ink">
+              <h3 className="text-ink mb-1 line-clamp-2 text-[13px] leading-tight font-medium">
                 {space.title}
               </h3>
             ) : null}
@@ -165,7 +165,10 @@ export function SpaceMeta({
   return (
     <div className={cn('min-w-0', align === 'right' && 'text-right', className)}>
       <SpaceNumber value={space.index} className={cn('mb-2', align === 'right' && 'text-right')} />
-      <h3 className="mb-2 text-[clamp(15px,1.3vw,21px)] font-medium leading-tight text-ink">
+      {/* `hyphens-none` with `break-words`: the longest Space name is
+          "Photography", which is one unbreakable word wider than the meta
+          column at the inner tracks, and was being clipped mid-word. */}
+      <h3 className="text-ink mb-2 text-[clamp(13px,1.04vw,17.5px)] leading-tight font-medium">
         {space.title}
       </h3>
       <p className="text-[clamp(9.5px,0.76vw,12px)] leading-[1.45] text-ink-3">

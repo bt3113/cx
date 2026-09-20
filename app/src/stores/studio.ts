@@ -71,6 +71,7 @@ function emptyWorld(handle: string): World {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/London',
       avatar: { key: 'avatars/alex-den', alt: 'Avatar', retina: false },
       portrait: null,
+      photoUrl: null,
       character: null,
       socials: [],
       theme: {

@@ -124,7 +124,20 @@ export function CurvedGrid({ className }: { className?: string }) {
  * The lit floor the figure stands on: concentric ellipses with one bronze ring,
  * matching the dais in both reference compositions.
  */
-export function Dais({ className }: { className?: string }) {
+export function Dais({
+  className,
+  /**
+   * `rings` draws the concentric bronze ellipses from the reference, which
+   * read as a floor a figure stands on. A framed portrait stands on
+   * nothing, so the world passes `rings={false}` and keeps only the pool of
+   * light — otherwise the rings sit in empty space looking like a stray
+   * oval.
+   */
+  rings = true,
+}: {
+  className?: string;
+  rings?: boolean;
+}) {
   const uid = useId().replace(/:/g, '');
   return (
     <svg
@@ -147,25 +160,29 @@ export function Dais({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       <ellipse cx="600" cy="130" rx="580" ry="120" fill={`url(#${uid}-floor)`} />
-      <ellipse
-        cx="600"
-        cy="132"
-        rx="330"
-        ry="66"
-        fill="none"
-        stroke={`url(#${uid}-ring)`}
-        strokeWidth="1.25"
-      />
-      <ellipse
-        cx="600"
-        cy="132"
-        rx="452"
-        ry="92"
-        fill="none"
-        stroke={`url(#${uid}-ring)`}
-        strokeWidth="1"
-        opacity="0.5"
-      />
+      {rings ? (
+        <>
+          <ellipse
+            cx="600"
+            cy="132"
+            rx="330"
+            ry="66"
+            fill="none"
+            stroke={`url(#${uid}-ring)`}
+            strokeWidth="1.25"
+          />
+          <ellipse
+            cx="600"
+            cy="132"
+            rx="452"
+            ry="92"
+            fill="none"
+            stroke={`url(#${uid}-ring)`}
+            strokeWidth="1"
+            opacity="0.5"
+          />
+        </>
+      ) : null}
     </svg>
   );
 }

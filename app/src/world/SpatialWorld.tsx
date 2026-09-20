@@ -9,18 +9,16 @@
  * All movement is transform-only and collapses entirely under
  * `prefers-reduced-motion` or a creator's "still" motion setting.
  */
-import { Fragment, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { cn } from '@/design/cn';
-import { Picture } from '@/lib/media';
-import { LazyCharacterPreview } from '@/features/character/LazyCharacterPreview';
-import type { CharacterConfig } from '@/features/character/schema';
+import { ProfilePortrait } from '@/features/identity/ProfilePortrait';
 import { repo } from '@/lib/repo';
 import type { Item, Person, Space } from '@/lib/schema';
 import { CurvedGrid, Dais } from './CurvedGrid';
 import { SpaceCard, SpaceMeta } from './SpaceCard';
 import { IdentityBlock } from './IdentityBlock';
-import { cylinder, DESKTOP_SLOTS, FIGURE, IDENTITY } from './slots';
+import { CENTRE_COL, COLUMNS, DESKTOP_SLOTS, GAP, ROWS } from './slots';
 
 const MOTION_STRENGTH: Record<Person['theme']['motion'], number> = {
   still: 0,
@@ -110,113 +108,102 @@ export function SpatialWorld({
       </motion.div>
 
       {/*
-        `pointer-events-none` is load-bearing, not tidying. Cards sit at a
-        negative translateZ inside this preserve-3d container, which places
-        them behind the container's own z=0 plane — so the container wins
-        every hit test and nothing inside it is clickable. Each interactive
-        child re-enables pointer events for itself.
+        The wall.
+
+        A CSS Grid, not a field of absolutely positioned boxes. Every Space
+        occupies one cell of a five-by-three track definition, so a row is a
+        row by construction and alignment cannot drift — which is exactly
+        what went wrong when these were hand-placed percentages.
+
+        `perspective` lives on the stage above, shared by everything in
+        here. That single viewpoint is what makes the outer columns turn
+        toward the eye and read as a curved room; per-card perspective gives
+        each card its own vanishing point and reads as unrelated skew.
+
+        `pointer-events-none` is load-bearing: cards sit at a negative
+        translateZ inside this preserve-3d container, so the container wins
+        every hit test unless its children opt back in.
       */}
       <motion.div
-        className="preserve-3d pointer-events-none absolute inset-0"
-        style={{ rotateY, rotateX, x: shiftX }}
+        className="preserve-3d pointer-events-none absolute inset-0 grid content-center px-[3%] pt-[6%] pb-[7%]"
+        style={{
+          gridTemplateColumns: COLUMNS,
+          gridTemplateRows: ROWS,
+          gap: GAP,
+          rotateY,
+          rotateX,
+          x: shiftX,
+        }}
       >
         {/* Floor. */}
-        <Dais className="bottom-[2%] left-1/2 w-[72%] -translate-x-1/2" />
+        <Dais rings={false} className="bottom-[14%] left-1/2 w-[46%] -translate-x-1/2" />
 
-        {/* The figure — the anchor of the whole composition. A creator without
-            a photograph gets their built character, framed as a bust on the
-            dais rather than a stretched imitation of a full-length figure. */}
-        {person.portrait || person.character ? (
-          <motion.div
-            className="pointer-events-none absolute z-20"
-            style={{
-              left: person.portrait ? `${FIGURE.l}%` : `${FIGURE.l - 1}%`,
-              top: person.portrait ? `${FIGURE.t}%` : `${FIGURE.t + 14}%`,
-              width: person.portrait ? `${FIGURE.w}%` : `${FIGURE.w + 2}%`,
-              x: figureX,
-              z: 60,
-            }}
-          >
-            {person.portrait ? (
-              <Picture
-                media={person.portrait}
-                priority
-                sizes="16vw"
-                className="block w-full"
-                imgClassName="w-full h-auto [mix-blend-mode:screen]"
-              />
-            ) : (
-              <LazyCharacterPreview
-                config={person.character as CharacterConfig}
-                alt={`${person.name}'s character`}
-                className="w-full drop-shadow-[0_30px_50px_rgba(0,0,0,0.85)]"
-              />
-            )}
-          </motion.div>
-        ) : null}
+        {/*
+          The creator's column: portrait, name, links — stacked and centred,
+          spanning all three rows.
 
-        {/* Identity. */}
-        <div
-          className="pointer-events-auto absolute z-30"
-          style={{ left: `${IDENTITY.l}%`, top: `${IDENTITY.t}%`, width: `${IDENTITY.w}%` }}
+          It replaces the standing figure, which came from the design
+          reference and so showed the same stranger on every creator's
+          world. The centre track is 22% of the stage, which is not enough
+          to set a display name beside a portrait without one crowding the
+          other, so the two stack — which is what a profile photograph
+          wants anyway.
+        */}
+        <motion.div
+          className="pointer-events-auto z-30 flex flex-col items-center self-start text-center"
+          style={{ gridColumn: CENTRE_COL, gridRow: '1 / -1', x: figureX }}
+          initial={strength ? { opacity: 0, y: 20 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
         >
-          <IdentityBlock person={person} />
-        </div>
+          <ProfilePortrait person={person} priority className="w-[58%]" />
+          <IdentityBlock
+            person={person}
+            layout="inline"
+            className="mt-5 w-full [&>ul]:justify-center"
+          />
+        </motion.div>
 
         {/* Spaces. */}
         {spaces.slice(0, slots.length).map((space, i) => {
           const slot = slots[i]!;
-          const geo = cylinder(slot.card, 1);
           const count = items
             ? items.filter((it) => it.spaceId === space.id).length
             : repo.listItems(space.id).length;
 
           return (
-            // A wrapper element here must not carry `preserve-3d`: that
-            // establishes a containing block, and a zero-height static wrapper
-            // would then collapse every percentage offset inside it to 0.
-            <Fragment key={space.id}>
-              {slot.meta ? (
-                <div
-                  className="pointer-events-auto absolute z-10"
-                  style={{
-                    left: `${slot.meta.l}%`,
-                    top: `${slot.meta.t}%`,
-                    width: `${slot.meta.w}%`,
-                    transform: `perspective(1400px) rotateY(${geo.rotateY * 0.6}deg) translateZ(${geo.depth * 0.3}px)`,
-                  }}
-                >
-                  <SpaceMeta space={space} align={slot.meta.align} />
-                </div>
-              ) : null}
-
-              <motion.div
-                className="pointer-events-auto absolute z-10"
-                initial={strength ? { opacity: 0, y: 18 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.05 * i, ease: [0.22, 1, 0.36, 1] }}
-                // Rotation and depth go through motion's own transform props —
-                // a `transform` string in `style` is overwritten by the
-                // animation and silently lost.
-                style={{
-                  left: `${slot.card.l}%`,
-                  top: `${slot.card.t}%`,
-                  width: `${slot.card.w}%`,
-                  transformPerspective: 1400,
-                  rotateY: geo.rotateY,
-                  z: geo.depth,
-                }}
-              >
+            <motion.div
+              key={space.id}
+              className="preserve-3d z-10 flex items-start"
+              style={{
+                gridColumn: slot.col,
+                gridRow: slot.row,
+                marginTop: `${slot.drop}%`,
+                rotateY: slot.rotateY,
+                z: slot.depth,
+              }}
+              initial={strength ? { opacity: 0, y: 16 } : false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.04 * i, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* The meta column keeps its width whether or not it has text,
+                  so an empty one never pulls its card out of line. */}
+              <div className="pointer-events-auto shrink-0" style={{ width: `${slot.metaPct}%` }}>
+                {slot.meta ? <SpaceMeta space={space} align="left" /> : null}
+              </div>
+              <div aria-hidden="true" className="shrink-0" style={{ width: `${slot.gapPct}%` }} />
+              <div className="pointer-events-auto min-w-0 flex-1">
                 <SpaceCard
                   space={space}
                   handle={person.handle}
                   itemCount={count}
                   overlay="caption"
+                  ratio={slot.ratio}
                   priority={i < 4}
-                  sizes="14vw"
+                  sizes="13vw"
                 />
-              </motion.div>
-            </Fragment>
+              </div>
+            </motion.div>
           );
         })}
       </motion.div>

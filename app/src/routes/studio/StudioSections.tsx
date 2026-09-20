@@ -29,6 +29,8 @@ import { ArrowRight, Download, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/design/cn';
 import { Button, DisclosureChip, Divider } from '@/design/primitives';
 import { CharacterBuilder } from '@/features/character/CharacterBuilder';
+import { PhotoUpload } from '@/features/identity/PhotoUpload';
+import { ProfilePortrait } from '@/features/identity/ProfilePortrait';
 import { defaultCharacter, type CharacterConfig } from '@/features/character/schema';
 import { AreaChart, BarList, MetricTile } from '@/features/charts/Charts';
 import { ShareButton } from '@/features/share/ShareButton';
@@ -164,6 +166,23 @@ export function StudioIdentity() {
                 setRoles(e.target.value);
                 updatePerson(handle, { roles: e.target.value.split(',').map((r) => r.trim()).filter(Boolean).slice(0, 5) });
               }} placeholder="Designer, Creator, Explorer" />
+          </StudioField>
+
+          <StudioField
+            label="Profile photograph"
+            hint="The centre of your world. Visitors see this before anything else."
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-28 shrink-0">
+                <ProfilePortrait person={person} />
+              </div>
+              <div className="min-w-0 flex-1 pt-1">
+                <PhotoUpload
+                  photoUrl={person.photoUrl}
+                  onChange={(photoUrl) => updatePerson(handle, { photoUrl })}
+                />
+              </div>
+            </div>
           </StudioField>
 
           <StudioField label="Location" htmlFor="s-location">

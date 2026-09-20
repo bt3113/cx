@@ -155,6 +155,12 @@ export const personSchema = z.object({
   timezone: z.string().max(40),
   avatar: mediaSchema,
   portrait: mediaSchema.nullable(),
+  /**
+   * A photograph the creator uploaded themselves, held as a data URL.
+   * This is the world's centrepiece when set, and it takes precedence over
+   * every other anchor: it is the one image the creator chose.
+   */
+  photoUrl: z.string().nullable().default(null),
   /** Used as the world's anchor when there is no portrait photograph. */
   character: personCharacterSchema.default(null),
   socials: z.array(socialSchema),

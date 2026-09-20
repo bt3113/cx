@@ -1,70 +1,108 @@
 /**
- * Slot geometry for the desktop world.
+ * Grid geometry for the desktop world.
  *
- * Positions are percentages of the stage, measured off the supplied desktop
- * reference (1672 x 941) so the built composition lands where the reference
- * puts it. `rotateY` and `depth` are derived from horizontal distance to the
- * centre, which is what turns a set of absolutely positioned cards into the
- * inside of a cylinder.
+ * Rewritten twice. The first version positioned every Space's meta column
+ * and its card as two independent absolute boxes with separately authored
+ * tops — 11% and 13.5% on one slot, 63% and 67% on another — so nothing
+ * shared an edge and the whole wall drifted. Hand-tuning those percentages
+ * a second time did not fix it either, because the problem was the
+ * technique, not the numbers.
  *
- * The reference's grammar is consistent: a meta column (number, title, two or
- * three descriptor lines) sits to the LEFT of its artwork, in four vertical
- * bands — far left, inner left, inner right, far right. Travel is the one
- * exception and carries no meta at all.
+ * So the wall is a CSS Grid. Five columns and three rows; a Space occupies
+ * one cell and cannot land anywhere else. Alignment is a property of the
+ * track definition rather than something maintained by hand, which means a
+ * row is a row by construction.
+ *
+ * The cylinder is layered on top: `perspective` belongs to the grid
+ * container, NOT to each card. One shared viewpoint is what makes the left
+ * column tilt away and the right column tilt toward the eye, reading as a
+ * curved room. Per-card perspective — what this used to do — gives every
+ * card its own vanishing point, which reads as unrelated skew.
  */
 
-export type Box = { l: number; t: number; w: number };
+/** Column tracks, left to right. The centre column holds the creator. */
+/**
+ * Outer tracks are wider than inner ones. On a cylinder the columns nearest
+ * the eye are the largest, and that size difference is most of what sells
+ * the curve — equal tracks read as a flat wall however much they rotate.
+ */
+export const COLUMNS = '1.16fr 0.97fr 1.2fr 0.97fr 1.16fr';
+/**
+ * Real gutters between tracks. Without them a card sits flush against the
+ * next column's meta text, and because each card is rotated its projected
+ * box is wider than its layout box, so it covers the text beside it.
+ */
+export const GAP = '4.5% 4%';
+/**
+ * Rows size to their content rather than splitting the stage into equal
+ * thirds. Fixed thirds left roughly 75px of dead space under every card,
+ * because a card is shorter than a third of the frame — the block is
+ * centred vertically instead.
+ */
+export const ROWS = 'repeat(3, auto)';
+
+/** 1-based grid column for each of the five tracks. */
+const COL = { farLeft: 1, innerLeft: 2, centre: 3, innerRight: 4, farRight: 5 } as const;
 
 export type Slot = {
-  card: Box;
-  /** Meta column beside the card, when the grammar calls for one. */
-  meta?: Box & { align: 'left' | 'right' };
+  /** 1-based grid position. */
+  col: number;
+  row: number;
+  /** Meta column width, as a percentage of the cell. */
+  metaPct: number;
+  /** Gap between meta and card, as a percentage of the cell. */
+  gapPct: number;
+  /** Whether this Space shows a meta column. The card keeps its position
+   *  either way, so an empty meta slot does not pull the card left. */
+  meta: boolean;
+  /** Card aspect. Outer columns are nearer the eye, so their cards are
+   *  larger and square; inner columns sit further back and go landscape. */
+  ratio: string;
+  /** Degrees of Y rotation and depth, from the column's place on the
+   *  cylinder. Symmetric about the centre by construction. */
+  rotateY: number;
+  depth: number;
+  /** Extra top offset, following the cylinder's rim as it falls inward. */
+  drop: number;
 };
 
-/** Twelve slots in the reference's own order. */
+type ColumnShape = Omit<Slot, 'col' | 'row' | 'meta'>;
+
+const SHAPE: Record<number, ColumnShape> = {
+  [COL.farLeft]: { metaPct: 40, gapPct: 5, ratio: '1 / 1', rotateY: 9, depth: -150, drop: 0 },
+  [COL.innerLeft]: { metaPct: 46, gapPct: 5, ratio: '5 / 4', rotateY: 4.5, depth: -62, drop: 4 },
+  [COL.innerRight]: { metaPct: 46, gapPct: 5, ratio: '5 / 4', rotateY: -4.5, depth: -62, drop: 4 },
+  [COL.farRight]: { metaPct: 40, gapPct: 5, ratio: '1 / 1', rotateY: -9, depth: -150, drop: 0 },
+};
+
+const at = (col: number, row: number, meta = true): Slot => ({
+  col,
+  row,
+  meta,
+  ...SHAPE[col]!,
+});
+
+/**
+ * Twelve Spaces in their numbered order.
+ *
+ * Row two runs 05, 07, 06, 08 from left to right, which is why its entries
+ * look transposed — that is the order the reference numbers them in.
+ * Travel is the one Space the reference leaves without a meta column.
+ */
 export const DESKTOP_SLOTS: Slot[] = [
-  // 01 Wardrobe — far left, high
-  { card: { l: 10.2, t: 13.5, w: 11.2 }, meta: { l: 3.3, t: 11, w: 6.3, align: 'left' } },
-  // 02 Music — inner left
-  { card: { l: 30.6, t: 19.5, w: 9.4 }, meta: { l: 24.2, t: 19, w: 6, align: 'left' } },
-  // 03 Travel — inner right, high. No meta in the reference.
-  { card: { l: 66.3, t: 19.5, w: 9.5 } },
-  // 04 Memories — far right, highest
-  { card: { l: 85.3, t: 14.5, w: 11.5 }, meta: { l: 78.6, t: 16, w: 6.3, align: 'left' } },
-  // 05 Books — far left, middle band
-  { card: { l: 3.3, t: 37, w: 11.2 } },
-  // 06 Work — inner right, middle
-  { card: { l: 66.3, t: 39, w: 9.5 }, meta: { l: 59.3, t: 39, w: 6.5, align: 'left' } },
-  // 07 Photography — inner left, middle
-  { card: { l: 30.6, t: 40.5, w: 9.4 }, meta: { l: 24.2, t: 40, w: 6, align: 'left' } },
-  // 08 Fitness — far right, middle
-  { card: { l: 85.3, t: 39, w: 11.5 }, meta: { l: 79, t: 38, w: 6, align: 'left' } },
-  // 09 Gaming — far left, low
-  { card: { l: 10.2, t: 67, w: 11.2 }, meta: { l: 3.3, t: 63, w: 6.3, align: 'left' } },
-  // 10 Movies — inner left, low
-  { card: { l: 30.6, t: 66.5, w: 9.4 }, meta: { l: 24.2, t: 61, w: 6, align: 'left' } },
-  // 11 Ideas — inner right, low (small tile)
-  { card: { l: 70.5, t: 60, w: 7 }, meta: { l: 59.3, t: 57, w: 7, align: 'left' } },
-  // 12 Life — far right, low
-  { card: { l: 85.3, t: 60, w: 11.5 }, meta: { l: 79, t: 58, w: 6, align: 'left' } },
+  at(COL.farLeft, 1), // 01 Wardrobe
+  at(COL.innerLeft, 1), // 02 Music
+  at(COL.innerRight, 1, false), // 03 Travel
+  at(COL.farRight, 1), // 04 Memories
+  at(COL.farLeft, 2), // 05 Books
+  at(COL.innerRight, 2), // 06 Work
+  at(COL.innerLeft, 2), // 07 Photography
+  at(COL.farRight, 2), // 08 Fitness
+  at(COL.farLeft, 3), // 09 Gaming
+  at(COL.innerLeft, 3), // 10 Movies
+  at(COL.innerRight, 3), // 11 Ideas
+  at(COL.farRight, 3), // 12 Life
 ];
 
-/**
- * The figure and identity block.
- *
- * The name sits clear of the head: in the reference the head occupies roughly
- * 44–49% and the name begins just past it.
- */
-export const FIGURE = { l: 39.5, t: 12, w: 13.5 };
-export const IDENTITY = { l: 53.4, t: 14.2, w: 15 };
-
-/**
- * Cylinder placement for a slot. Cards nearer the edge turn further towards
- * the viewer and sit further back.
- */
-export function cylinder(box: Box, strength = 1) {
-  const centre = (box.l + box.w / 2) / 100 - 0.5; // -0.5 (left) .. 0.5 (right)
-  const rotateY = -centre * 30 * strength;
-  const depth = -Math.abs(centre) * 300 * strength;
-  return { rotateY, depth, centre };
-}
+/** The creator's column: portrait above name and links, spanning all rows. */
+export const CENTRE_COL = COL.centre;
